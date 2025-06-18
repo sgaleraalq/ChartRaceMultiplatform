@@ -28,4 +28,9 @@ dependencyResolutionManagement {
     }
 }
 
-include(":composeApp")
+include(":chart-race")
+include(":chart-race:chart-core")
+include(":chart-race:chart-ui-compose")
+include(":chart-race:chart-sample")
+include(":chart-race:iosApp")
+include(":chart-race:build-logic")

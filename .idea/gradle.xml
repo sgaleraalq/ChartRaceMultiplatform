@@ -9,7 +9,12 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/composeApp" />
+            <option value="$PROJECT_DIR$/chart-race" />
+            <option value="$PROJECT_DIR$/chart-race/build-logic" />
+            <option value="$PROJECT_DIR$/chart-race/chart-core" />
+            <option value="$PROJECT_DIR$/chart-race/chart-sample" />
+            <option value="$PROJECT_DIR$/chart-race/chart-ui-compose" />
+            <option value="$PROJECT_DIR$/chart-race/iosApp" />
           </set>
         </option>
       </GradleProjectSettings>
