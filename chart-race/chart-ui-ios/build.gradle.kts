@@ -1,13 +1,10 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
-
-    id("com.google.devtools.ksp")
-    id("com.google.dagger.hilt.android")
 }
 
 android {
-    namespace = "com.sgale.chart_sample"
+    namespace = "com.sgale.chart_ui_ios"
     compileSdk = 35
 
     defaultConfig {
@@ -36,9 +33,6 @@ android {
 }
 
 dependencies {
-    // hilt
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -46,8 +40,4 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.testExt.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-}
-
-android.sourceSets.all {
-    kotlin.srcDir("src/$name/kotlin")
 }

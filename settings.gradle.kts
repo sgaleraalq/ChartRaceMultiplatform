@@ -2,6 +2,8 @@ rootProject.name = "ChartRaceMultiplatform"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
+    include(":build-logic")
+
     repositories {
         google {
             mavenContent {
@@ -28,9 +30,7 @@ dependencyResolutionManagement {
     }
 }
 
-include(":chart-race")
 include(":chart-race:chart-core")
-include(":chart-race:chart-ui-compose")
 include(":chart-race:chart-sample")
-include(":chart-race:iosApp")
-include(":chart-race:build-logic")
+include(":chart-race:chart-ui-compose")
+include(":chart-race:chart-ui-ios")
