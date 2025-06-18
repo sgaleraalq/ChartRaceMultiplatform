@@ -1,43 +1,53 @@
 plugins {
-    alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinAndroid)
+    `kotlin-dsl`
 }
 
-android {
-    namespace = "com.sgale.build_logic"
-    compileSdk = 35
+group = "com.sgale.buildlogic"
 
-    defaultConfig {
-        minSdk = 24
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 
 dependencies {
+    compileOnly(libs.android.gradlePlugin)
+    compileOnly(libs.compose.compiler.gradlePlugin)
+    compileOnly(libs.kotlin.gradlePlugin)
+}
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.testExt.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+gradlePlugin {
+    plugins {
+        /**
+         * Basic Android
+         */
+        register("androidApplication") {
+            id = "com.sgale.android.application"
+            implementationClass = "com.sgale.convention.AndroidApplicationConventionPlugin"
+        }
+        register("androidLibrary") {
+            id = "com.sgale.android.library"
+            implementationClass = "com.sgale.convention.AndroidLibraryConventionPlugin"
+        }
+
+        /**
+         * Compose
+         */
+        register("androidComposeApplication") {
+            id = "com.sgale.android.application.compose"
+            implementationClass = "com.sgale.convention.AndroidComposeApplicationConventionPlugin"
+        }
+        register("androidComposeLibrary") {
+            id = "com.sgale.android.library.compose"
+            implementationClass = "com.sgale.convention.AndroidComposeLibraryConventionPlugin"
+        }
+
+        /**
+         * Hilt
+         */
+        register("androidHilt") {
+            id = "com.sgale.android.hilt"
+            implementationClass = "com.sgale.convention.AndroidHiltConventionPlugin"
+        }
+    }
 }
