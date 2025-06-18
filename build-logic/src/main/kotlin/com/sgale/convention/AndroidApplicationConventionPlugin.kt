@@ -20,7 +20,9 @@ import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.sgale.convention.android.configureKotlinAndroid
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 
@@ -35,7 +37,15 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 configureKotlinAndroid(this)
                 defaultConfig.targetSdk = 35
                 sourceSets.all {
-                    kotlin.srcDir("src/${name}/kotlin")
+                    kotlin.srcDir("src/$name/kotlin")
+                    java.srcDir("src/$name/kotlin")
+                }
+
+                sourceSets {
+                    getByName("androidTest").java.srcDirs("src/androidTest/kotlin")
+                    getByName("debug").java.srcDirs("src/debug/kotlin")
+                    getByName("main").java.srcDirs("src/main/kotlin")
+                    getByName("test").java.srcDirs("src/test/kotlin")
                 }
             }
 
@@ -43,6 +53,13 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 configureKotlinAndroid(this)
             }
 
+            val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
+
+            dependencies {
+                add("implementation", libs.findLibrary("androidx.core.ktx").get())
+                add("implementation", libs.findLibrary("androidx.appcompat").get())
+                add("implementation", libs.findLibrary("material").get())
+            }
         }
     }
 }

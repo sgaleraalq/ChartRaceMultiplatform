@@ -47,7 +47,7 @@ gradlePlugin {
          */
         register("androidHilt") {
             id = "com.sgale.android.hilt"
-            implementationClass = "com.sgale.convention.AndroidHiltConventionPlugin"
+            implementationClass = "com.sgale.convention.HiltConventionPlugin"
         }
     }
 }

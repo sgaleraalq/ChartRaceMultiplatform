@@ -18,8 +18,11 @@ package com.sgale.convention.android
 
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 
@@ -39,5 +42,18 @@ internal fun Project.configureAndroidCompose(
             setOf(ComposeFeatureFlag.StrongSkipping)
         )
         reportsDestination = layout.buildDirectory.dir("compose_compiler")
+    }
+
+
+    val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
+    dependencies {
+        add("implementation", platform(libs.findLibrary("androidx-compose-bom").get()))
+        add("implementation", libs.findLibrary("androidx-compose-runtime").get())
+        add("implementation", libs.findLibrary("androidx-compose-material3").get())
+        add("implementation", libs.findLibrary("androidx-compose-foundation").get())
+        add("implementation", libs.findLibrary("androidx-compose-foundation-layout").get())
+        add("implementation", libs.findLibrary("androidx-compose-ui").get())
+        add("implementation", libs.findLibrary("androidx-compose-ui-tooling-preview").get())
+        add("debugImplementation", libs.findLibrary("androidx-compose-ui-tooling").get())
     }
 }
