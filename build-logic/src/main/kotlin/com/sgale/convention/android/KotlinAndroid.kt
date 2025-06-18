@@ -17,6 +17,7 @@
 package com.sgale.convention.android
 
 import com.android.build.api.dsl.CommonExtension
+import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.sgale.convention.android.ProjectConfiguration.COMPILE_SDK
 import com.sgale.convention.android.ProjectConfiguration.MIN_SDK
 import org.gradle.api.JavaVersion.VERSION_17

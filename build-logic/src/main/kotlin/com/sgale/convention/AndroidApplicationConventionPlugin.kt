@@ -34,11 +34,15 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             extensions.configure<BaseAppModuleExtension> {
                 configureKotlinAndroid(this)
                 defaultConfig.targetSdk = 35
+                sourceSets.all {
+                    kotlin.srcDir("src/${name}/kotlin")
+                }
             }
 
             extensions.getByType<KotlinAndroidProjectExtension>().apply {
                 configureKotlinAndroid(this)
             }
+
         }
     }
 }
