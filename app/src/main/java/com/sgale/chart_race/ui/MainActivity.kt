@@ -1,4 +1,4 @@
-package com.sgale.chart_sample.ui
+package com.sgale.chart_race.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

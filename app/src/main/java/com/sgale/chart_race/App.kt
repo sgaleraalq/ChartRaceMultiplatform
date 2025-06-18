@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.sgale.chart_sample
+package com.sgale.chart_race
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class App : Application()
+class ChartRaceApp : Application()

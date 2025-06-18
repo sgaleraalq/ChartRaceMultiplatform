@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.sgale.app"
+    namespace = "com.sgale.chart_race"
     compileSdk = 35
 
     defaultConfig {

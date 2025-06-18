@@ -30,7 +30,8 @@ dependencyResolutionManagement {
     }
 }
 
+include(":app")
+
 include(":chart-race:chart-core")
-include(":chart-race:chart-sample")
 include(":chart-race:chart-ui-compose")
 include(":chart-race:chart-ui-ios")

@@ -1,4 +1,4 @@
-package com.sgale.chart_sample
+package com.sgale.chart_race
 
 import org.junit.Test
 
