@@ -92,12 +92,7 @@ class KmpMultiplatformConventionPlugin : Plugin<Project> {
 
             commonMain.dependencies {
 //                implementation(compose.preview)
-//                implementation(libs.findLibrary("compose.runtime").get())
-//                implementation(libs.findLibrary("compose.foundation").get())
-//                implementation(libs.findLibrary("compose.material3").get())
-//                implementation(libs.findLibrary("compose.ui").get())
-//                implementation(libs.findLibrary("compose.components.resources").get())
-//                implementation(libs.findLibrary("compose.components.uiToolingPreview").get())
+
                 implementation(libs.findLibrary("androidx.lifecycle.viewmodel").get())
                 implementation(libs.findLibrary("androidx.lifecycle.runtimeCompose").get())
             }
