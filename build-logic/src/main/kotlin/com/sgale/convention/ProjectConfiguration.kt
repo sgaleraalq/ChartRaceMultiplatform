@@ -1,7 +1,8 @@
 package com.sgale.convention
 
 object ProjectConfiguration {
-    const val APPLICATION_ID = "com.sgale.kmpchartrace"
+    const val NAMESPACE = "com.sgale.chart_race"
+    const val APPLICATION_ID = "com.sgale.chart_race"
     const val VERSION_CODE = 20250619
     const val VERSION_NAME = "1.0.0"
     const val COMPILE_SDK = 35

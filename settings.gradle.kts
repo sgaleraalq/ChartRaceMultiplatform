@@ -1,7 +1,15 @@
+rootProject.name = "ChartRaceMultiplatform"
+
 pluginManagement {
     includeBuild("build-logic")
     repositories {
-        google()
+        google {
+            mavenContent {
+                includeGroupAndSubgroups("androidx")
+                includeGroupAndSubgroups("com.android")
+                includeGroupAndSubgroups("com.google")
+            }
+        }
         mavenCentral()
         gradlePluginPortal()
     }
@@ -9,12 +17,17 @@ pluginManagement {
 
 dependencyResolutionManagement {
     repositories {
-        google()
+        google {
+            mavenContent {
+                includeGroupAndSubgroups("androidx")
+                includeGroupAndSubgroups("com.android")
+                includeGroupAndSubgroups("com.google")
+            }
+        }
         mavenCentral()
     }
 }
 
-rootProject.name = "ChartRaceMultiplatform"
 include(":app")
 include(":chart-race:chart-core")
 include(":chart-race:chart-ui-compose")
