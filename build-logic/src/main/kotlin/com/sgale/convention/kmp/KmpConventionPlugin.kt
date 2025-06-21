@@ -20,9 +20,18 @@ import com.android.build.gradle.BaseExtension
 import com.sgale.convention.ProjectConfiguration.APPLICATION_ID
 import com.sgale.convention.ProjectConfiguration.COMPILE_SDK
 import com.sgale.convention.ProjectConfiguration.MIN_SDK
+import com.sgale.convention.ProjectConfiguration.NAMESPACE
 import com.sgale.convention.ProjectConfiguration.TARGET_SDK
 import com.sgale.convention.ProjectConfiguration.VERSION_CODE
 import com.sgale.convention.ProjectConfiguration.VERSION_NAME
+import com.sgale.convention.kmp.KmpConfiguration.COMPOSE_FOUNDATION
+import com.sgale.convention.kmp.KmpConfiguration.COMPOSE_MATERIAL3
+import com.sgale.convention.kmp.KmpConfiguration.COMPOSE_RUNTIME
+import com.sgale.convention.kmp.KmpConfiguration.COMPOSE_UI
+import com.sgale.convention.kmp.KmpConfiguration.COMPOSE_UI_TOOLING_PREVIEW
+import com.sgale.convention.kmp.KmpConfiguration.COMPOSE_VERSION
+import com.sgale.convention.kmp.KmpConfiguration.LIFECYCLE_RUNTIME_COMPOSE
+import com.sgale.convention.kmp.KmpConfiguration.LIFECYCLE_VIEWMODEL
 import org.gradle.api.JavaVersion.VERSION_11
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -32,18 +41,19 @@ import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
-
 class KmpMultiplatformConventionPlugin : Plugin<Project> {
+    private val composeVersion = COMPOSE_VERSION
+
     override fun apply(target: Project) = with(target) {
         val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
         plugins.apply(libs.findPlugin("kotlinMultiplatform").get().get().pluginId)
+        plugins.apply(libs.findPlugin("androidApplication").get().get().pluginId)
         plugins.apply(libs.findPlugin("composeMultiplatform").get().get().pluginId)
         plugins.apply(libs.findPlugin("composeCompiler").get().get().pluginId)
-        plugins.apply(libs.findPlugin("androidApplication").get().get().pluginId)
 
         extensions.configure<BaseExtension> {
-            namespace = "com.sgale.kmp"
+            namespace = NAMESPACE
             compileSdkVersion(COMPILE_SDK)
             defaultConfig {
                 minSdk = MIN_SDK
@@ -64,7 +74,11 @@ class KmpMultiplatformConventionPlugin : Plugin<Project> {
                 }
             }
 
-            packagingOptions.resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
+//            packagingOptions {
+//                resources {
+//                    excludes.add("/META-INF/{AL2.0,LGPL2.1}")
+//                }
+//            }
         }
 
         extensions.configure<KotlinMultiplatformExtension> {
@@ -73,6 +87,13 @@ class KmpMultiplatformConventionPlugin : Plugin<Project> {
                 compilerOptions {
                     jvmTarget.set(JVM_11)
                 }
+            }
+
+            val androidMain = sourceSets.getByName("androidMain")
+
+            androidMain.dependencies {
+                implementation(libs.findLibrary("androidx.activity.compose").get())
+                implementation(composeDependency(COMPOSE_UI_TOOLING_PREVIEW))
             }
 
             listOf(
@@ -91,18 +112,25 @@ class KmpMultiplatformConventionPlugin : Plugin<Project> {
             val commonTest = sourceSets.getByName("commonTest")
 
             commonMain.dependencies {
-//                implementation(compose.preview)
-
-                implementation(libs.findLibrary("androidx.lifecycle.viewmodel").get())
-                implementation(libs.findLibrary("androidx.lifecycle.runtimeCompose").get())
+//                implementation(composeDependency(COMPOSE_COMPONENTS_RESOURCES))
+                implementation(composeDependency(COMPOSE_RUNTIME))
+                implementation(composeDependency(COMPOSE_FOUNDATION))
+                implementation(composeDependency(COMPOSE_MATERIAL3))
+                implementation(composeDependency(COMPOSE_UI))
+                implementation(composeDependency(COMPOSE_UI_TOOLING_PREVIEW))
+                implementation(libs.findLibrary(LIFECYCLE_VIEWMODEL).get())
+                implementation(libs.findLibrary(LIFECYCLE_RUNTIME_COMPOSE).get())
             }
-            commonTest.dependencies {
-                implementation(libs.findLibrary("kotlin.test").get())
-            }
 
-//            dependencies {
-//                add("debugImplementation", libs.findLibrary("compose.uiTooling").get())
+//            commonTest.dependencies {
+//                implementation(libs.findLibrary(KOTLIN_TEST).get())
 //            }
         }
+
+//        dependencies {
+//            add("implementation", libs.findLibrary(COMPOSE_COMPONENTS_UI_TOOLING).get())
+//        }
     }
+
+    private fun composeDependency(groupWithArtifact: String) = "$groupWithArtifact:$composeVersion"
 }
