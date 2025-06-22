@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -15,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
 import com.sgale.chart_common_ui.ChartBackground
+import com.sgale.chart_core.utils.Example
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -44,6 +46,9 @@ fun SampleScreen() {
             color = White
         )
         Spacer(Modifier.height(12.dp))
-        ChartBackground()
+        ChartBackground(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
+            data = Example.exampleData
+        )
     }
 }

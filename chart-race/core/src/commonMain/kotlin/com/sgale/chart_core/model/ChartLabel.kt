@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package com.sgale.chart_core
+package com.sgale.chart_core.model
 
-data class ChartItem(
+data class ChartLabel(
     val id: String,
-    val name: String
+    val name: String,
+    val img: Int? = null
 )

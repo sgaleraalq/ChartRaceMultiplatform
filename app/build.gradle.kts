@@ -23,6 +23,7 @@ android {
 kotlin {
     sourceSets {
         commonMain.dependencies {
+            implementation(projects.chartRace.core)
             implementation(projects.chartRace.chartCommonUi)
             implementation(compose.components.resources)
         }

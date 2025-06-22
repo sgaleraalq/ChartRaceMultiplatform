@@ -16,41 +16,32 @@
 
 package com.sgale.chart_common_ui
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Black
-import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.Color.Companion.Yellow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.sgale.chart_core.ChartItem
+import com.sgale.chart_core.ChartData
 
 @Composable
 fun ChartBackground(
-    modifier: Modifier = Modifier.padding(horizontal = 24.dp).fillMaxWidth().height(300.dp),
-    data: List<ChartItem> = emptyList(),
-    backgroundColor: Color = White,
+    modifier: Modifier = Modifier,
+    height: Dp = 300.dp,
+    data: ChartData? = null,
     rows: Int = 5
 ) {
-//    var displayedRows = if (rows > data.size) data.size - 1 else rows
+    if (data == null || data.data.isEmpty()) {
+        return
+    }
 
-    Column(
-        modifier = modifier.background(backgroundColor)
-    ) {
-        repeat(rows) {
-            ChartRow(
-                modifier = Modifier.weight(1f).fillMaxWidth()
-            )
-        }
+    println("This is my dataaa $data")
+    Canvas(modifier = modifier.height(height)) {
+        drawFrame()
     }
 }
 
