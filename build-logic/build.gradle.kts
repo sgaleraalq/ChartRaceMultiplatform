@@ -21,9 +21,13 @@ gradlePlugin {
         /**
          * Kotlin Multiplatform
          */
-        register("kmpMultiplatform") {
-            id = "com.sgale.kmp.multiplatform"
-            implementationClass = "com.sgale.convention.kmp.KmpMultiplatformConventionPlugin"
+        register("kmpAppMultiplatform") {
+            id = "com.chart_race.kmp.app.multiplatform"
+            implementationClass = "com.sgale.convention.kmp.KmpAppConventionPlugin"
+        }
+        register("kmpLibraryMultiplatform") {
+            id = "com.chart_race.kmp.library.multiplatform"
+            implementationClass = "com.sgale.convention.kmp.KmpLibraryConventionPlugin"
         }
 
         /**
@@ -31,27 +35,27 @@ gradlePlugin {
          */
         // Basic Android
         register("androidApplication") {
-            id = "com.sgale.android.application"
+            id = "com.chart_race.android.application"
             implementationClass = "com.sgale.convention.android.AndroidApplicationConventionPlugin"
         }
         register("androidLibrary") {
-            id = "com.sgale.android.library"
+            id = "com.chart_race.android.library"
             implementationClass = "com.sgale.convention.android.AndroidLibraryConventionPlugin"
         }
 
         // Android Compose
         register("androidComposeApplication") {
-            id = "com.sgale.android.application.compose"
+            id = "com.chart_race.android.application.compose"
             implementationClass = "com.sgale.convention.android.AndroidComposeApplicationConventionPlugin"
         }
         register("androidComposeLibrary") {
-            id = "com.sgale.android.library.compose"
+            id = "com.chart_race.android.library.compose"
             implementationClass = "com.sgale.convention.android.AndroidComposeLibraryConventionPlugin"
         }
 
         // Hilt
         register("androidHilt") {
-            id = "com.sgale.android.hilt"
+            id = "com.chart_race.android.hilt"
             implementationClass = "com.sgale.convention.android.HiltConventionPlugin"
         }
     }

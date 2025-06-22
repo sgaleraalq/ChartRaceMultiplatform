@@ -17,8 +17,7 @@
 package com.sgale.convention.android
 
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
-import com.sgale.convention.android.helper.configureKotlinAndroid
-import com.sgale.convention.android.helper.configureSourceSets
+import com.sgale.convention.configureKotlinAndroid
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
@@ -37,17 +36,6 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             extensions.configure<BaseAppModuleExtension> {
                 configureKotlinAndroid(this)
                 defaultConfig.targetSdk = 35
-                sourceSets.all {
-                    kotlin.srcDir("src/$name/kotlin")
-                    java.srcDir("src/$name/kotlin")
-                }
-
-                sourceSets {
-                    getByName("androidTest").java.srcDirs("src/androidTest/kotlin")
-                    getByName("debug").java.srcDirs("src/debug/kotlin")
-                    getByName("main").java.srcDirs("src/main/kotlin")
-                    getByName("test").java.srcDirs("src/test/kotlin")
-                }
             }
 
             extensions.getByType<KotlinAndroidProjectExtension>().apply {
@@ -61,8 +49,6 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 add("implementation", libs.findLibrary("androidx.appcompat").get())
                 add("implementation", libs.findLibrary("material").get())
             }
-
-            configureSourceSets()
         }
     }
 }

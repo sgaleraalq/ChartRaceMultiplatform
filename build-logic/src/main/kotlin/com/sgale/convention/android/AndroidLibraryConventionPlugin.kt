@@ -17,7 +17,7 @@
 package com.sgale.convention.android
 
 import com.android.build.gradle.LibraryExtension
-import com.sgale.convention.android.helper.configureKotlinAndroid
+import com.sgale.convention.configureKotlinAndroid
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure

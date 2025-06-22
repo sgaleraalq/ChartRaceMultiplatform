@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package com.sgale.convention.android.helper
+package com.sgale.convention
 
 import com.android.build.api.dsl.CommonExtension
-import com.android.build.gradle.BaseExtension
 import com.sgale.convention.ProjectConfiguration.COMPILE_SDK
 import com.sgale.convention.ProjectConfiguration.MIN_SDK
 import org.gradle.api.JavaVersion.VERSION_17
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 
 internal fun Project.configureKotlinAndroid(
@@ -53,15 +52,7 @@ internal fun Project.configureKotlinAndroid(
 ) {
     extension.apply {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
+            jvmTarget.set(JVM_17)
         }
     }
-}
-
-internal fun Project.configureSourceSets() {
-    val android = extensions.getByName("android") as BaseExtension
-
-    android.sourceSets.getByName("main").java.srcDirs("src/main/kotlin")
-    android.sourceSets.getByName("test").java.srcDirs("src/test/kotlin")
-    android.sourceSets.getByName("androidTest").java.srcDirs("src/androidTest/kotlin")
 }
