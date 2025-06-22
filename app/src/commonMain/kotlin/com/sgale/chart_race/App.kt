@@ -16,8 +16,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import chartrace.app.generated.resources.Res
-import chartrace.app.generated.resources.compose_multiplatform
+import chartracemultiplatform.app.generated.resources.Res
+import chartracemultiplatform.app.generated.resources.compose_multiplatform
 import com.sgale.chart_common_ui.Chart
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview

@@ -26,7 +26,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ChartRace"
+rootProject.name = "ChartRaceMultiplatform"
 include(":app")
 
 include(":chart-race:chart-core")

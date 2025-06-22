@@ -1,4 +1,4 @@
-package org.gaztelubira.kmp
+package com.sgale.chart_race
 
 import androidx.compose.ui.window.ComposeUIViewController
 
