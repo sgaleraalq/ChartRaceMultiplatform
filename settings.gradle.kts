@@ -29,7 +29,6 @@ dependencyResolutionManagement {
 rootProject.name = "ChartRaceMultiplatform"
 include(":app")
 
-include(":chart-race:chart-core")
-include(":chart-race:chart-ui-compose")
-include(":chart-race:chart-ui-ios")
+include(":chart-race:core")
 include(":chart-race:chart-common-ui")
+include(":chart-race:chart-compose-ui")

@@ -1,5 +1,5 @@
 plugins {
-    id("com.chart_race.android.library")
+    id("com.chart_race.kmp")
 }
 
 android {

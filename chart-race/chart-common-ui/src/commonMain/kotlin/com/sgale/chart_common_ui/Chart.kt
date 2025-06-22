@@ -16,30 +16,14 @@
 
 package com.sgale.chart_common_ui
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.White
-import androidx.compose.ui.unit.dp
 
-@Composable
-fun Chart(
-    content: @Composable () -> Unit
+class Chart(
+    internal val content: @Composable (Modifier) -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .height(100.dp)
-            .background(Color.Red)
-    ) {
-        Text(
-            "This is just a example text",
-            color = White
-        )
-        content()
+    @Composable
+    operator fun invoke(modifier: Modifier = Modifier) {
+        content(modifier)
     }
 }

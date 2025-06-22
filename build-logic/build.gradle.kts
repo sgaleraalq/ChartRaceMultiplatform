@@ -21,6 +21,10 @@ gradlePlugin {
         /**
          * Kotlin Multiplatform
          */
+        register("kotlinMultiplatform") {
+            id = "com.chart_race.kmp"
+            implementationClass = "com.sgale.convention.kmp.KotlinMultiplatformConventionPlugin"
+        }
         register("kmpAppMultiplatform") {
             id = "com.chart_race.kmp.app.multiplatform"
             implementationClass = "com.sgale.convention.kmp.KmpAppConventionPlugin"
