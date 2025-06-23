@@ -14,8 +14,30 @@
  * limitations under the License.
  */
 
-package com.sgale.chart_core.model
+package com.sgale.chart_core
 
-data class ChartItem(
-    val label: ChartLabel
-)
+abstract class AbstractChart {
+    abstract val height: Float
+
+    companion object {
+        const val DEFAULT_HEIGHT = 300f
+        const val TIME_BETWEEN_FRAMES =  1000L
+    }
+
+    val frameTime: Long = 16L // 60 FPS
+
+
+    init {
+
+    }
+
+    abstract fun drawFrame()
+
+//    abstract fun drawData(data: ChartData)
+//
+//    abstract fun drawRow(row: Int, data: ChartData)
+//
+//    abstract fun drawAxisLabels(data: ChartData)
+//
+//    abstract fun drawLegend(data: ChartData)
+}

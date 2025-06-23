@@ -14,10 +14,20 @@
  * limitations under the License.
  */
 
-package com.sgale.chart_core.model
+package com.sgale.chart_core.barchart
 
-data class ChartLabel(
-    val id: String,
-    val name: String,
-    val img: Int? = null
-)
+import com.sgale.chart_core.AbstractChart
+
+class BarChart(
+    override val height: Float
+) : AbstractChart() {
+
+
+    init {
+
+    }
+    override fun drawFrame() {
+
+    }
+
+}

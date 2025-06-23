@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.sgale.chart_core
+package com.sgale.chart_core.barchart
 
-import com.sgale.chart_core.model.ChartItem
+import com.sgale.chart_core.AbstractEntry
 
-data class ChartData(
-    val data: List<ChartItem>
-)
+class BarChartEntry(override val id: Int) : AbstractEntry() {
+}
