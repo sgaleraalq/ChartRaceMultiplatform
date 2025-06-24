@@ -16,18 +16,8 @@
 
 package com.sgale.chart_core.barchart
 
-import com.sgale.chart_core.AbstractChart
-
-class BarChart(
-    override val height: Float
-) : AbstractChart() {
-
-    init {
-
-    }
-
-    override fun drawFrame() {
-
-    }
-
-}
+data class ChartEntryModel(
+    val id: String? = null,
+    val label: String? = null,
+    val values: List<Double>? = null,
+)

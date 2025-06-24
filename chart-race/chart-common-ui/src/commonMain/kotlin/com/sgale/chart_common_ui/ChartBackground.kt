@@ -26,20 +26,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Yellow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.sgale.chart_core.ChartData
 
 @Composable
 fun ChartBackground(
     modifier: Modifier = Modifier,
     height: Dp = 300.dp,
-    data: ChartData? = null,
     rows: Int = 5
 ) {
-    if (data == null || data.data.isEmpty()) {
-        return
-    }
-
-    println("This is my dataaa $data")
     Canvas(modifier = modifier.height(height)) {
         drawFrame()
     }
