@@ -17,10 +17,9 @@
 package com.sgale.chart_core.csv
 
 import android.content.Context
-import android.net.Uri
 import androidx.core.net.toUri
 
-class CsvProvider(
+class CsvProviderImpl(
     private val context: Context
 ) : ICsvProvider {
 

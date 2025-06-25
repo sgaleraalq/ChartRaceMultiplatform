@@ -14,21 +14,8 @@
  * limitations under the License.
  */
 
-package com.sgale.chart_core.barchart
+package com.sgale.chart_core
 
-import com.sgale.chart_core.AbstractChart
-
-class BarChart(
-    val height: Float
-) : AbstractChart() {
-
-    init {
-
-    }
-
-
-    override fun onNewPosition() {
-
-    }
-
+interface ChartEntry {
+    fun onNewPosition()
 }

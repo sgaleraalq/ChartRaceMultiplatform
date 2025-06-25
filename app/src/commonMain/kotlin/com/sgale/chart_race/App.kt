@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
@@ -19,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import com.sgale.chart_common_ui.ChartBackground
 import com.sgale.chart_core.csv.CsvParser
 import com.sgale.chart_core.csv.ICsvProvider
-import com.sgale.chart_core.utils.ChartRaceLog.Companion.log
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -37,7 +35,7 @@ fun SampleScreen(
 ) {
     val softDark = Color(0xFF121212)
 
-    CsvParser(csvProvider, "assets/sample.csv").parse()
+//    CsvParser("assets/sample.csv").parse()
 
     Column(
         modifier = Modifier
