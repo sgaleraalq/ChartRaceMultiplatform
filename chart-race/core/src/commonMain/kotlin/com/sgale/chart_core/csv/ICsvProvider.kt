@@ -16,22 +16,6 @@
 
 package com.sgale.chart_core.csv
 
-import com.sgale.chart_core.barchart.ChartEntryModel
-import com.sgale.chart_core.utils.ChartRaceLog.Companion.log
-
-class CsvParser(
-    private val csvProvider: ICsvProvider?,
-    private val csvPath: String,
-) {
-
-    fun parse(): List<ChartEntryModel> {
-//        val openCsv = readCsvFromUri(csv)
-        val openCsv = csvProvider?.readCsvFromUri(csvPath)
-//        val lines = csv.trim().lines().filter { it.isNotBlank() }
-
-        log.i { "This is from csv provider $openCsv" }
-//        log.i { "Parsing CSV with ${lines.size} lines and delimiter '$delimiter'" }
-        return listOf(ChartEntryModel())
-    }
-
+interface ICsvProvider {
+    fun readCsvFromUri(uri: String): String?
 }

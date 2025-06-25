@@ -18,34 +18,26 @@ import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
 import com.sgale.chart_common_ui.ChartBackground
 import com.sgale.chart_core.csv.CsvParser
+import com.sgale.chart_core.csv.ICsvProvider
 import com.sgale.chart_core.utils.ChartRaceLog.Companion.log
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
-fun App() {
-    val csv = "assets/sample.csv"
-    val values = listOf(
-        "1960", "1961", "1962"
-    )
+fun App(csvProvider: ICsvProvider? = null) {
     MaterialTheme {
-        SampleScreen(csv, values)
+        SampleScreen(csvProvider)
     }
 }
 
 
 @Composable
 fun SampleScreen(
-    csv: String,
-    values: List<String>
+    csvProvider: ICsvProvider?
 ) {
     val softDark = Color(0xFF121212)
 
-    val entries = remember(csv) {
-        CsvParser(csv, values).parse()
-    }
-
-    log.i { "Procesando $entries entradas" }
+    CsvParser(csvProvider, "assets/sample.csv").parse()
 
     Column(
         modifier = Modifier

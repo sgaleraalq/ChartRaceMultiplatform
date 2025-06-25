@@ -20,12 +20,15 @@ import com.android.build.gradle.LibraryExtension
 import com.sgale.convention.configureKotlinAndroid
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 class KotlinMultiplatformConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
+            val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
             with(pluginManager) {
                 apply("com.android.library")
                 apply("org.jetbrains.kotlin.multiplatform")
@@ -36,6 +39,10 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
                 iosArm64()
                 iosX64()
                 iosSimulatorArm64()
+
+                sourceSets.androidMain.dependencies {
+                    implementation(libs.findLibrary("androidx.core.ktx").get())
+                }
 
                 sourceSets.commonMain.dependencies {
                     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
