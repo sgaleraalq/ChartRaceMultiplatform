@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.sgale.chart_core.barchart
+package com.sgale.chart_core.csv
 
-data class ChartEntryModel(
-    val id: String? = null,
-    val label: String? = null,
-    val values: List<Double>? = null,
-)
+import com.sgale.chart_core.ChartEntryModel
+
+interface ICsvParser {
+    fun parseCsv(csvData: String): List<ChartEntryModel>
+}

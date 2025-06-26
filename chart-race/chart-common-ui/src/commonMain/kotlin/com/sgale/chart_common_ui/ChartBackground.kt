@@ -26,6 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Yellow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.sgale.chart_core.AbstractChart
+import com.sgale.chart_core.barchart.BarChart
 
 @Composable
 fun ChartBackground(
@@ -51,5 +53,5 @@ fun ChartRow(
 fun BarChartRace(
     csvData: String
 ) {
-    println("BarChartRace: $csvData")
+    val myData = BarChart(csvData)
 }

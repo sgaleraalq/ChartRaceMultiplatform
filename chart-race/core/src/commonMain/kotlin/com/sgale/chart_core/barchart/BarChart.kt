@@ -17,10 +17,11 @@
 package com.sgale.chart_core.barchart
 
 import com.sgale.chart_core.AbstractChart
+import com.sgale.chart_core.ChartEntryModel
 
 class BarChart(
-    val height: Float
-) : AbstractChart() {
+    csvData: String
+) : AbstractChart(csvData) {
 
     init {
 
@@ -29,6 +30,10 @@ class BarChart(
 
     override fun onNewPosition() {
 
+    }
+
+    override fun parseCsv(csvData: String): List<ChartEntryModel> {
+        return emptyList()
     }
 
 }

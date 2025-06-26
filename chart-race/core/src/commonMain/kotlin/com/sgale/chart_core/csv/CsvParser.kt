@@ -16,21 +16,27 @@
 
 package com.sgale.chart_core.csv
 
-import com.sgale.chart_core.barchart.ChartEntryModel
-import com.sgale.chart_core.utils.ChartRaceLog.Companion.log
+import com.sgale.chart_core.ChartEntryModel
 
-class CsvParser(
-    private val csvPath: String,
-    private val csvProvider: ICsvProvider
-) {
+class CsvParser : ICsvParser {
 
-    fun parse(): List<ChartEntryModel> {
-//        val openCsv = readCsvFromUri(csv)
-        val openCsv = csvProvider.readCsvFromUri(csvPath)
-//        val lines = csv.trim().lines().filter { it.isNotBlank() }
+    override fun parseCsv(csvData: String): List<ChartEntryModel> {
+        val lines = csvData.trim().lines()
+        if (lines.isEmpty()) return emptyList()
+        val header = lines.first().split(",").drop(1)
+        val entries = mutableListOf<ChartEntryModel>()
 
-        log.i { "This is from csv provider $openCsv" }
-        return listOf(ChartEntryModel())
+        for (line in lines.drop(1)) {
+            val values = line.split(",")
+
+            entries.add(
+                ChartEntryModel(
+                    id = "",
+                    label = values[0],
+                    values = values.drop(1).mapNotNull { it.toDoubleOrNull() }
+                )
+            )
+        }
+        return entries
     }
-
 }
