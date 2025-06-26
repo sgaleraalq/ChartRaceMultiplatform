@@ -14,23 +14,10 @@
  * limitations under the License.
  */
 
-package com.sgale.chart_core.csv
+package com.sgale.chart_core
 
-import com.sgale.chart_core.barchart.ChartEntryModel
-import com.sgale.chart_core.utils.ChartRaceLog.Companion.log
-
-class CsvParser(
-    private val csvPath: String,
-    private val csvProvider: ICsvProvider
-) {
-
-    fun parse(): List<ChartEntryModel> {
-//        val openCsv = readCsvFromUri(csv)
-        val openCsv = csvProvider.readCsvFromUri(csvPath)
-//        val lines = csv.trim().lines().filter { it.isNotBlank() }
-
-        log.i { "This is from csv provider $openCsv" }
-        return listOf(ChartEntryModel())
-    }
-
-}
+data class ChartEntryModel(
+    val id: String,
+    val label: String,
+    val values: List<Double>
+)
