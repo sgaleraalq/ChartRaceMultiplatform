@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -15,28 +14,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
-import com.sgale.chart_common_ui.ChartBackground
-import com.sgale.chart_core.csv.CsvParser
-import com.sgale.chart_core.csv.ICsvProvider
+import com.sgale.chart_common_ui.BarChartRace
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
-fun App(csvProvider: ICsvProvider? = null) {
+fun App(csvData: String?) {
     MaterialTheme {
-        SampleScreen(csvProvider)
+        SampleScreen(csvData)
     }
 }
 
 
 @Composable
 fun SampleScreen(
-    csvProvider: ICsvProvider?
+    csvData: String?
 ) {
+    if (csvData.isNullOrBlank()) return
+
     val softDark = Color(0xFF121212)
-
-//    CsvParser("assets/sample.csv").parse()
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -51,8 +47,6 @@ fun SampleScreen(
             color = White
         )
         Spacer(Modifier.height(12.dp))
-        ChartBackground(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp)
-        )
+        BarChartRace(csvData)
     }
 }

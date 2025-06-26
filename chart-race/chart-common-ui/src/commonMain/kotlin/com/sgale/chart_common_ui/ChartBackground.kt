@@ -46,3 +46,10 @@ fun ChartRow(
         modifier = modifier.padding(vertical = 4.dp).background(color = Yellow)
     )
 }
+
+@Composable
+fun BarChartRace(
+    csvData: String
+) {
+    println("BarChartRace: $csvData")
+}
