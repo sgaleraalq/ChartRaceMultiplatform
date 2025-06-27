@@ -1,6 +1,5 @@
 package com.sgale.chart_race
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
-import com.sgale.chart_common_ui.BarChartRace
+import com.sgale.chart_common_ui.ChartRace
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -47,6 +46,6 @@ fun SampleScreen(
             color = White
         )
         Spacer(Modifier.height(12.dp))
-        BarChartRace(csvData)
+        ChartRace(csvData)
     }
 }

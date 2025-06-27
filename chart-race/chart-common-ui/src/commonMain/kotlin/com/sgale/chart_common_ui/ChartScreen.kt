@@ -16,47 +16,19 @@
 
 package com.sgale.chart_common_ui
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.sgale.chart_core.barchart.BarChart
+import com.sgale.chart_common_ui.barchart.BarChartRace
+import com.sgale.chart_common_ui.linechart.LineChartRace
 import com.sgale.chart_core.utils.DataType
 
 @Composable
-fun BarChartRace(
+fun ChartRace(
     csvData: String,
+    chartType: ChartType = ChartType.BAR_CHART,
     dataType: DataType = DataType.LONG
 ) {
-    val barChart = BarChart(csvData, dataType)
-
-    Column {
-        BarChartRow(barChart)
-    }
-}
-
-@Composable
-fun BarChartRow(
-    barChart: BarChart
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(300.dp)
-            .padding(24.dp)
-    ) {
-        barChart.chartData.entries.forEach { entry ->
-            Row {
-                Text(text = entry.label)
-                Spacer(modifier = Modifier.weight(1f))
-                Text(text = entry.currentValue.toString())
-            }
-        }
+    when (chartType) {
+        ChartType.BAR_CHART -> BarChartRace(csvData, dataType)
+        ChartType.LINE_CHART -> LineChartRace(csvData, dataType)
     }
 }

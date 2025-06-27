@@ -25,6 +25,6 @@ class BarChart (
 ) : AbstractChart(csvData, dataType) {
 
     override fun onNewPosition() {
-        // Future: avanzar estado de la animación
+
     }
 }
