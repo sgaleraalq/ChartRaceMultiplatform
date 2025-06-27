@@ -16,7 +16,12 @@
 
 package com.sgale.chart_common_ui
 
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.White
 import com.sgale.chart_common_ui.barchart.BarChartRace
 import com.sgale.chart_common_ui.linechart.LineChartRace
 import com.sgale.chart_core.utils.DataType
@@ -25,10 +30,15 @@ import com.sgale.chart_core.utils.DataType
 fun ChartRace(
     csvData: String,
     chartType: ChartType = ChartType.BAR_CHART,
-    dataType: DataType = DataType.LONG
+    dataType: DataType = DataType.LONG,
+    numberOfEntries: Int = 10
 ) {
-    when (chartType) {
-        ChartType.BAR_CHART -> BarChartRace(csvData, dataType)
-        ChartType.LINE_CHART -> LineChartRace(csvData, dataType)
+    Box(
+        modifier = Modifier.background(White)
+    ) {
+        when (chartType) {
+            ChartType.BAR_CHART -> BarChartRace(csvData, dataType, numberOfEntries)
+            ChartType.LINE_CHART -> LineChartRace(csvData, dataType)
+        }
     }
 }

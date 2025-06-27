@@ -39,7 +39,7 @@ abstract class AbstractChart(
             ChartData.IntData(parsed)
         }
         DOUBLE -> {
-            val parsed = csvParser.parseCsvAsDouble(data).values.sortedByDescending { it.currentValue  }
+            val parsed = csvParser.parseCsvAsDouble(data).values.sortedByDescending { it.currentValue }
             println("This is my chartData: $parsed")
             ChartData.DoubleData(parsed)
         }

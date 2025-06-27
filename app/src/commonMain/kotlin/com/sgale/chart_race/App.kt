@@ -1,5 +1,6 @@
 package com.sgale.chart_race
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,8 +36,7 @@ fun SampleScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-//            .background(softDark)
-            .padding(vertical = 12.dp)
+            .background(softDark)
             .systemBarsPadding()
 
     ) {

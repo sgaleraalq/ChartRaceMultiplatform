@@ -19,12 +19,13 @@ package com.sgale.chart_core.csv
 import com.sgale.chart_core.model.ChartDataModel
 import com.sgale.chart_core.model.ChartEntryModel
 
-class CsvParser : ICsvParser {
-
+class CsvParser(
+    private val delimiter: String = ","
+) : ICsvParser {
     private val headerMap = mutableMapOf<Int, String>()
 
     private fun populateHeaderMap(headerLine: String) {
-        headerLine.split(",").forEachIndexed { index, header ->
+        headerLine.split(delimiter).forEachIndexed { index, header ->
             headerMap[index] = header.trim()
         }
     }
@@ -36,7 +37,7 @@ class CsvParser : ICsvParser {
         populateHeaderMap(lines[0])
 
         val entries = lines.drop(1).mapNotNull { line ->
-            val values = line.split(",")
+            val values = line.split(delimiter)
 
             val valuesMap = values.mapIndexedNotNull { index, value ->
                 val key = headerMap[index] ?: return@mapIndexedNotNull null
@@ -54,6 +55,7 @@ class CsvParser : ICsvParser {
                 id = label, // todo
                 label = label,
                 currentValue = currentValue,
+                currentPercentage = 1f,
                 values = valuesMap
             )
         }
