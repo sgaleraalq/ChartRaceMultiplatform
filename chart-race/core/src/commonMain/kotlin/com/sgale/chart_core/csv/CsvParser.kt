@@ -16,27 +16,68 @@
 
 package com.sgale.chart_core.csv
 
-import com.sgale.chart_core.ChartEntryModel
+import com.sgale.chart_core.model.ChartDataModel
+import com.sgale.chart_core.model.ChartEntryModel
 
 class CsvParser : ICsvParser {
 
-    override fun parseCsv(csvData: String): List<ChartEntryModel> {
-        val lines = csvData.trim().lines()
-        if (lines.isEmpty()) return emptyList()
-        val header = lines.first().split(",").drop(1)
-        val entries = mutableListOf<ChartEntryModel>()
+    private val headerMap = mutableMapOf<Int, String>()
 
-        for (line in lines.drop(1)) {
+    private fun populateHeaderMap(headerLine: String) {
+        headerLine.split(",").forEachIndexed { index, header ->
+            headerMap[index] = header.trim()
+        }
+    }
+
+    private inline fun <reified T : Number> parseCsv(csvData: String): ChartDataModel<T> {
+        val lines = csvData.trim().lines()
+        if (lines.size < 2) return ChartDataModel(emptyList())
+
+        populateHeaderMap(lines[0])
+
+        val entries = lines.drop(1).mapNotNull { line ->
             val values = line.split(",")
 
-            entries.add(
-                ChartEntryModel(
-                    id = "",
-                    label = values[0],
-                    values = values.drop(1).mapNotNull { it.toDoubleOrNull() }
-                )
+            val valuesMap = values.mapIndexedNotNull { index, value ->
+                val key = headerMap[index] ?: return@mapIndexedNotNull null
+                val parsed = parseValue<T>(value)
+                parsed?.let { key to it }
+            }.toMap()
+
+            if (valuesMap.isEmpty()) return@mapNotNull null
+
+            val label = values.getOrNull(0)?.trim() ?: return@mapNotNull null
+            val defaultKey = headerMap[1] ?: return@mapNotNull null
+            val currentValue = valuesMap[defaultKey] ?: defaultValueForType<T>()
+
+            ChartEntryModel(
+                id = label, // todo
+                label = label,
+                currentValue = currentValue,
+                values = valuesMap
             )
         }
-        return entries
+
+        return ChartDataModel(entries)
     }
+
+    private inline fun <reified T : Number> parseValue(raw: String): T? =
+        when (T::class) {
+            Int::class -> raw.toIntOrNull() as? T
+            Long::class -> raw.toLongOrNull() as? T
+            Double::class -> raw.toDoubleOrNull() as? T
+            else -> null
+        }
+
+    private inline fun <reified T : Number> defaultValueForType(): T =
+        when (T::class) {
+            Int::class -> 0 as T
+            Long::class -> 0L as T
+            Double::class -> 0.0 as T
+            else -> throw IllegalArgumentException("Unsupported type: ${T::class}")
+        }
+
+    override fun parseCsvAsInt(csvData: String): ChartDataModel<Int> = parseCsv(csvData)
+    override fun parseCsvAsDouble(csvData: String): ChartDataModel<Double> = parseCsv(csvData)
+    override fun parseCsvAsLong(csvData: String): ChartDataModel<Long> = parseCsv(csvData)
 }

@@ -16,8 +16,3 @@
 
 package com.sgale.chart_core
 
-data class ChartEntryModel(
-    val id: String,
-    val label: String,
-    val values: List<Double>
-)

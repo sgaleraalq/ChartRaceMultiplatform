@@ -36,7 +36,7 @@ fun SampleScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(softDark)
+//            .background(softDark)
             .padding(vertical = 12.dp)
             .systemBarsPadding()
 

@@ -16,8 +16,10 @@
 
 package com.sgale.chart_core.csv
 
-import com.sgale.chart_core.ChartEntryModel
+import com.sgale.chart_core.model.ChartDataModel
 
 interface ICsvParser {
-    fun parseCsv(csvData: String): List<ChartEntryModel>
+    fun parseCsvAsInt(csvData: String): ChartDataModel<Int>
+    fun parseCsvAsDouble(csvData: String): ChartDataModel<Double>
+    fun parseCsvAsLong(csvData: String): ChartDataModel<Long>
 }

@@ -16,42 +16,53 @@
 
 package com.sgale.chart_common_ui
 
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color.Companion.Yellow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.sgale.chart_core.AbstractChart
 import com.sgale.chart_core.barchart.BarChart
+import com.sgale.chart_core.csv.CsvParser
+import com.sgale.chart_core.utils.DataType
 
 @Composable
-fun ChartBackground(
-    modifier: Modifier = Modifier,
-    height: Dp = 300.dp,
-    rows: Int = 5
+fun BarChartRace(
+    csvData: String,
+    dataType: DataType = DataType.LONG
 ) {
-    Canvas(modifier = modifier.height(height)) {
-        drawFrame()
+    val parser = CsvParser()
+    val barChart = when (dataType) {
+        DataType.INT -> BarChart(csvData, parser::parseCsvAsInt)
+        DataType.DOUBLE -> BarChart(csvData, parser::parseCsvAsDouble)
+        DataType.LONG -> BarChart(csvData, parser::parseCsvAsLong)
+    }
+
+    Column {
+        BarChartRow(barChart)
     }
 }
 
 @Composable
-fun ChartRow(
-    modifier: Modifier
+fun BarChartRow(
+    barChart: BarChart<*>
 ) {
-    Box(
-        modifier = modifier.padding(vertical = 4.dp).background(color = Yellow)
-    )
-}
-
-@Composable
-fun BarChartRace(
-    csvData: String
-) {
-    val myData = BarChart(csvData)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(300.dp)
+            .padding(24.dp)
+    ) {
+        barChart.chartData.values.forEach { entry ->
+            Row {
+                Text(text = entry.label)
+                Spacer(modifier = Modifier.weight(1f))
+                Text(text = entry.currentValue.toString())
+            }
+        }
+    }
 }
