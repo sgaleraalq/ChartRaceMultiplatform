@@ -17,13 +17,12 @@
 package com.sgale.chart_core.barchart
 
 import com.sgale.chart_core.AbstractChart
-import com.sgale.chart_core.model.ChartDataModel
-import com.sgale.chart_core.model.ChartEntryModel
+import com.sgale.chart_core.utils.DataType
 
-class BarChart<T> (
+class BarChart (
     csvData: String,
-    parseFn: (String) -> ChartDataModel<T>
-) : AbstractChart<T>(csvData, parseFn) where T : Number, T : Comparable<T> {
+    dataType: DataType
+) : AbstractChart(csvData, dataType) {
 
     override fun onNewPosition() {
         // Future: avanzar estado de la animación

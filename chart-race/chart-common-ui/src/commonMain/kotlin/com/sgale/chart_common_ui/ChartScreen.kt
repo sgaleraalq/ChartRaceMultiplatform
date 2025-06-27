@@ -27,7 +27,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.sgale.chart_core.barchart.BarChart
-import com.sgale.chart_core.csv.CsvParser
 import com.sgale.chart_core.utils.DataType
 
 @Composable
@@ -35,12 +34,7 @@ fun BarChartRace(
     csvData: String,
     dataType: DataType = DataType.LONG
 ) {
-    val parser = CsvParser()
-    val barChart = when (dataType) {
-        DataType.INT -> BarChart(csvData, parser::parseCsvAsInt)
-        DataType.DOUBLE -> BarChart(csvData, parser::parseCsvAsDouble)
-        DataType.LONG -> BarChart(csvData, parser::parseCsvAsLong)
-    }
+    val barChart = BarChart(csvData, dataType)
 
     Column {
         BarChartRow(barChart)
@@ -49,7 +43,7 @@ fun BarChartRace(
 
 @Composable
 fun BarChartRow(
-    barChart: BarChart<*>
+    barChart: BarChart
 ) {
     Column(
         modifier = Modifier
@@ -57,7 +51,7 @@ fun BarChartRow(
             .height(300.dp)
             .padding(24.dp)
     ) {
-        barChart.chartData.values.forEach { entry ->
+        barChart.chartData.entries.forEach { entry ->
             Row {
                 Text(text = entry.label)
                 Spacer(modifier = Modifier.weight(1f))

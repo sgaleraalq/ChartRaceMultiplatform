@@ -16,21 +16,39 @@
 
 package com.sgale.chart_core
 
+import com.diamondedge.logging.logging
 import com.sgale.chart_core.csv.CsvParser
-import com.sgale.chart_core.model.ChartDataModel
-import com.sgale.chart_core.model.ChartEntryModel
+import com.sgale.chart_core.model.ChartData
+import com.sgale.chart_core.utils.DataType
+import com.sgale.chart_core.utils.DataType.DOUBLE
+import com.sgale.chart_core.utils.DataType.INT
+import com.sgale.chart_core.utils.DataType.LONG
 
-abstract class AbstractChart <T>(
-    private val data: String,
-    private val parse: (String) -> ChartDataModel<T>
-) : ChartEntry where T : Number, T : Comparable<T> {
+abstract class AbstractChart(
+    data: String,
+    dataType: DataType
+) : ChartEntry {
 
     private val csvParser = CsvParser()
 
-    val chartData: ChartDataModel<T> by lazy {
-        val raw = parse(data)
-        ChartDataModel(
-            values = raw.values.sortedByDescending { it.currentValue }
-        )
+    val chartData: ChartData = when (dataType) {
+        INT -> {
+            val parsed = csvParser.parseCsvAsInt(data).values.sortedByDescending { it.currentValue?.toDouble() ?: 0.0 }
+            println("This is my chartData: $parsed")
+            ChartData.IntData(parsed)
+        }
+        DOUBLE -> {
+            val parsed = csvParser.parseCsvAsDouble(data).values.sortedByDescending { it.currentValue?.toDouble() ?: 0.0 }
+            println("This is my chartData: $parsed")
+            ChartData.DoubleData(parsed)
+        }
+        LONG -> {
+            val parsed = csvParser.parseCsvAsLong(data).values.sortedByDescending { it.currentValue?.toDouble() ?: 0.0 }
+            println("This is my chartData: $parsed")
+            ChartData.LongData(parsed)
+        }
+    }
+
+    init {
     }
 }
