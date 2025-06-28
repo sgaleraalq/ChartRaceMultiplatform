@@ -22,6 +22,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlin.time.Clock
@@ -29,35 +30,45 @@ import kotlin.time.ExperimentalTime
 
 object Timer {
     private const val DELAY_TIME: Long = 16L
-
-    var elapsedTime: MutableStateFlow<Long> = MutableStateFlow(0L)
     private var startTimeMillis: Long = 0L
+    private var accumulatedTime: Long = 0L
     private var job: Job? = null
-
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
+    /**
+     * Composable state flow to hold the elapsed time in milliseconds.
+     */
+    private val _elapsedTime = MutableStateFlow(0L)
+    val elapsedTime: StateFlow<Long> = _elapsedTime
+    private val _isPlaying = MutableStateFlow(false)
+    var isPlaying: StateFlow<Boolean> = _isPlaying
+
     fun startTime() {
+        _isPlaying.value = true
         if (job == null) {
             startTimeMillis = currentTimeMillis()
             job = coroutineScope.launch {
                 while (isActive) {
                     delay(DELAY_TIME)
-                    elapsedTime.value = currentTimeMillis() - startTimeMillis
+                    _elapsedTime.value = accumulatedTime + (currentTimeMillis() - startTimeMillis)
                 }
             }
         }
     }
 
     fun pauseTime() {
+        _isPlaying.value = false
         job?.cancel()
         job = null
-        elapsedTime.value = currentTimeMillis() - startTimeMillis
+        val now = currentTimeMillis()
+        accumulatedTime += now - startTimeMillis
+        _elapsedTime.value = accumulatedTime
     }
 
     fun stopTime() {
         job?.cancel()
         job = null
-        elapsedTime.value = 0L
+        _elapsedTime.value = 0L
     }
 
     @OptIn(ExperimentalTime::class)

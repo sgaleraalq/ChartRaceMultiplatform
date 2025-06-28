@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.Center
@@ -37,7 +36,7 @@ val TIME_BAR_COLOR = Color(0xFFAAAAAA)
 
 @Composable
 fun Timer(
-    isPlaying: Boolean = false,
+    isPlaying: Boolean,
     onTimeStarted: () -> Unit,
     onTimePaused: () -> Unit,
 ) {
@@ -68,6 +67,7 @@ fun Timer(
 @Preview
 fun PreviewTimer() {
     Timer(
+        isPlaying = false,
         onTimeStarted = {},
         onTimePaused = {}
     )
