@@ -21,16 +21,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
-class Timer {
+object Timer {
+    private const val DELAY_TIME: Long = 16L
+
+    var elapsedTime: MutableStateFlow<Long> = MutableStateFlow(0L)
     private var startTimeMillis: Long = 0L
-    private var elapsedTime: Long = 0L
     private var job: Job? = null
-    private val delayTime: Long = 16L
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
@@ -39,9 +41,8 @@ class Timer {
             startTimeMillis = currentTimeMillis()
             job = coroutineScope.launch {
                 while (isActive) {
-                    delay(delayTime)
-                    elapsedTime = currentTimeMillis() - startTimeMillis
-                    println("Elapsed time: $elapsedTime ms") // Debugging output
+                    delay(DELAY_TIME)
+                    elapsedTime.value = currentTimeMillis() - startTimeMillis
                 }
             }
         }
@@ -50,16 +51,14 @@ class Timer {
     fun pauseTime() {
         job?.cancel()
         job = null
-        elapsedTime = currentTimeMillis() - startTimeMillis
+        elapsedTime.value = currentTimeMillis() - startTimeMillis
     }
 
     fun stopTime() {
         job?.cancel()
         job = null
-        elapsedTime = 0L
+        elapsedTime.value = 0L
     }
-
-    fun getElapsedTime(): Long = elapsedTime
 
     @OptIn(ExperimentalTime::class)
     private fun currentTimeMillis(): Long {

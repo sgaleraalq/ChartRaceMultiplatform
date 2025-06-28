@@ -22,7 +22,6 @@ import com.sgale.chart_core.utils.DataType
 import com.sgale.chart_core.utils.DataType.DOUBLE
 import com.sgale.chart_core.utils.DataType.INT
 import com.sgale.chart_core.utils.DataType.LONG
-import com.sgale.chart_core.utils.Timer
 
 abstract class AbstractChart(
     data: String,
@@ -30,7 +29,6 @@ abstract class AbstractChart(
 ) : ChartEntry {
 
     private val csvParser = CsvParser()
-    private val timer = Timer()
 
     val chartData: ChartData = when (dataType) {
         INT -> {
@@ -48,9 +46,5 @@ abstract class AbstractChart(
             println("This is my chartData: $parsed")
             ChartData.LongData(parsed)
         }
-    }
-
-    init {
-        timer.startTime()
     }
 }

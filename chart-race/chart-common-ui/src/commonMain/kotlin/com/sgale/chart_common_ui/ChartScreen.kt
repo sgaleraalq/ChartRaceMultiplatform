@@ -19,12 +19,16 @@ package com.sgale.chart_common_ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.White
 import com.sgale.chart_common_ui.barchart.BarChartRace
 import com.sgale.chart_common_ui.designsystem.timer.Timer
 import com.sgale.chart_common_ui.linechart.LineChartRace
 import com.sgale.chart_core.utils.DataType
+import com.sgale.chart_core.utils.Timer
 
 @Composable
 fun ChartRace(
@@ -33,6 +37,14 @@ fun ChartRace(
     dataType: DataType = DataType.LONG,
     numberOfEntries: Int = 10
 ) {
+    val time by Timer.elapsedTime.collectAsState()
+
+    LaunchedEffect(true) {
+        Timer.startTime()
+    }
+
+    println(time)
+
     Column(
         modifier = Modifier.background(White)
     ) {
