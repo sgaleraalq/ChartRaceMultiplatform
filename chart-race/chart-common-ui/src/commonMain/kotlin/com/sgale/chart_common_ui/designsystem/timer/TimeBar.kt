@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,9 +47,17 @@ fun TimeBar(
 
 @Composable
 fun TimeLine(
-    color: Color
+    color: Color,
+    valuesIndicator: List<String> = remember {
+        val listSize = (5..50).random()
+        val startYear = (1900..2020).random()
+        List(listSize) { index ->
+            (startYear + index).toString()
+        }
+    }
 ) {
     val arrowHeight = 10.dp
+    println("valuesIndicator: $valuesIndicator")
     Column {
         Box(
             modifier = Modifier.fillMaxWidth().height(arrowHeight),
@@ -58,7 +67,7 @@ fun TimeLine(
         Box(
             modifier = Modifier.fillMaxWidth().height(1.dp).background(color)
         )
-        Box(
+        Column(
             modifier = Modifier.height(20.dp)
         ) {
 
