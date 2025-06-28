@@ -16,15 +16,13 @@
 
 package com.sgale.chart_common_ui
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import com.sgale.chart_common_ui.barchart.BarChartRace
-import com.sgale.chart_common_ui.desingsystem.TimeBar
+import com.sgale.chart_common_ui.designsystem.timer.Timer
 import com.sgale.chart_common_ui.linechart.LineChartRace
 import com.sgale.chart_core.utils.DataType
 
@@ -42,7 +40,7 @@ fun ChartRace(
             ChartType.BAR_CHART -> BarChartRace(csvData, dataType, numberOfEntries)
             ChartType.LINE_CHART -> LineChartRace(csvData, dataType)
         }
-        TimeBar(
+        Timer(
             onTimeStarted = {},
             onTimePaused = {}
         )

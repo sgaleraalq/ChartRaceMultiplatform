@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sgale.chart_common_ui.desingsystem
+package com.sgale.chart_common_ui.designsystem.timer
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -22,59 +22,52 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Gray
-import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+val TIME_BAR_COLOR = Color(0xFFAAAAAA)
+
 @Composable
-fun TimeBar(
+fun Timer(
     isPlaying: Boolean = false,
     onTimeStarted: () -> Unit,
     onTimePaused: () -> Unit,
 ) {
-
     Box(
-        modifier = Modifier.fillMaxWidth().background(White),
+        modifier = Modifier.fillMaxWidth().background(White).height(50.dp),
         contentAlignment = Center
     ) {
         Row(
             verticalAlignment = CenterVertically
         ) {
-            IconButton(
-                modifier = Modifier.background(Red),
-                onClick = {
-                    if (!isPlaying) {
-                        onTimeStarted()
-                    } else {
-                        onTimePaused()
-                    }
-                },
-            ) {
-                // todo
-            }
-            Spacer(Modifier.width(12.dp))
-            Box(
-                modifier = Modifier.weight(1f).height(1.dp).background(Gray)
+            PlayButton(
+                isPlaying = isPlaying,
+                onTimeStarted = onTimeStarted,
+                onTimePaused = onTimePaused
             )
-            Spacer(Modifier.width(12.dp))
+            Spacer(Modifier.width(8.dp))
+            TimeBar(
+                modifier = Modifier.weight(1f),
+                color = TIME_BAR_COLOR
+            )
         }
     }
 }
 
+
+
 @Composable
 @Preview
-fun PreviewTimeBar() {
-    TimeBar(
+fun PreviewTimer() {
+    Timer(
         onTimeStarted = {},
         onTimePaused = {}
     )

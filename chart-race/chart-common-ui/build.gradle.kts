@@ -12,6 +12,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.chartRace.core)
+            implementation(compose.components.resources)
         }
     }
 }
