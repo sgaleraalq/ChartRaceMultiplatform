@@ -17,7 +17,6 @@
 package com.sgale.chart_common_ui.designsystem.timer
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -28,10 +27,13 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 
@@ -46,7 +48,7 @@ fun TimerPositionItem(
         modifier = Modifier
             .fillMaxWidth()
             .height(arrowHeight)
-            .pointerInput(Unit){
+            .pointerInput(Unit) {
                 awaitPointerEventScope {
                     while (true) {
                         val down = awaitFirstDown()
@@ -82,3 +84,73 @@ fun TimerPositionItem(
         }
     }
 }
+
+@Composable
+fun TimelineBar(color: Color) {
+    Canvas(
+        modifier = Modifier.fillMaxWidth().height(1.dp)
+    ) {
+        drawLine(
+            color = color,
+            start = Offset(0f, size.height / 2),
+            end = Offset(size.width, size.height / 2),
+            strokeWidth = size.height
+        )
+    }
+}
+
+val BAR_SMALL_SIZE = 5.dp
+val BAR_LARGE_SIZE = 10.dp
+
+@Composable
+fun TimelineItems(
+    modifier: Modifier = Modifier,
+    items: List<String>
+) {
+    val positions = getTimelinePositions(items)
+    val highlightedItems = listOf(0.5f, 0.65f)
+
+    Canvas(modifier = modifier) {
+        positions.forEach {
+            if (it == 0.5f) {
+                drawTimeline(it, BAR_LARGE_SIZE, true)
+            } else {
+                drawTimeline(it, BAR_SMALL_SIZE)
+            }
+        }
+    }
+}
+
+fun DrawScope.drawTimeline(
+    position: Float,
+    timelineHeight: Dp,
+    showText: Boolean = false
+) {
+    val x = size.width * position
+    val y = size.height / 2
+
+    drawLine(
+        color = Color.Gray,
+        start = Offset(x, 0f),
+        end = Offset(x, timelineHeight.toPx()),
+        strokeWidth = 1.dp.toPx()
+    )
+
+//        if (showText) {
+//            drawContext.canvas.nativeCanvas.apply {
+//                drawText(
+//                    "Item ${position * 100}",
+//                    x,
+//                    y - timelineHeight.toPx() - 5,
+//                    Paint().apply {
+//                        color = Blue
+//                    }
+//                )
+//            }
+//        }
+}
+
+private fun getTimelinePositions(items: List<String>): List<Float> =
+    List(items.size) { index ->
+        index.toFloat() / (items.size - 1)
+    }.takeIf { it.isNotEmpty() } ?: listOf(0f, 1f)

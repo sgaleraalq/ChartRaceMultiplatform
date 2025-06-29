@@ -59,9 +59,7 @@ fun TimerItem(
             TimeBar(
                 modifier = Modifier.weight(1f),
                 timePercentage = timePercentage,
-                onTimePositionChanged = {
-                    onTimePositionChanged(it)
-                },
+                onTimePositionChanged = { onTimePositionChanged(it) },
                 timelineItems = timelineItems,
                 color = TIME_BAR_COLOR
             )
