@@ -38,7 +38,7 @@ fun ChartRace(
     numberOfEntries: Int = 10
 ) {
     val timelineItems = remember {
-        val listSize = (5..50).random()
+        val listSize = (5..10).random()
         val startYear = (1900..2020).random()
         List(listSize) { index ->
             (startYear + index).toString()
@@ -47,10 +47,11 @@ fun ChartRace(
 
     val timer = remember { Timer(timelineItems.size) }
 
-    val time by timer.elapsedTime.collectAsState()
+    val timePercentage by timer.timePercentage.collectAsState()
     val isPlaying by timer.isPlaying.collectAsState()
 
-    println(time)
+    println("timelineItems = $timelineItems")
+    println("Timer: timePercentage = $timePercentage")
 
     Column(
         modifier = Modifier.background(White)
@@ -61,6 +62,7 @@ fun ChartRace(
         }
         TimerItem(
             isPlaying = isPlaying,
+            timePercentage = timePercentage,
             onTimeStarted = { timer.startTime() },
             onTimePaused = { timer.pauseTime() },
             timelineItems = timelineItems,

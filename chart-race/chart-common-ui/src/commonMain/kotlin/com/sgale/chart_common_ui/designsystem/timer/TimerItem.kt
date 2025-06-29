@@ -37,6 +37,7 @@ val TIME_BAR_COLOR = Color(0xFFAAAAAA)
 @Composable
 fun TimerItem(
     isPlaying: Boolean,
+    timePercentage: Float,
     onTimeStarted: () -> Unit,
     onTimePaused: () -> Unit,
     timelineItems: List<String>
@@ -56,8 +57,9 @@ fun TimerItem(
             Spacer(Modifier.width(8.dp))
             TimeBar(
                 modifier = Modifier.weight(1f),
-                color = TIME_BAR_COLOR,
-                timelineItems = timelineItems
+                timePercentage = timePercentage,
+                timelineItems = timelineItems,
+                color = TIME_BAR_COLOR
             )
         }
     }
@@ -68,6 +70,7 @@ fun TimerItem(
 fun PreviewTimer() {
     TimerItem(
         isPlaying = false,
+        timePercentage = 0.5f,
         onTimeStarted = {},
         onTimePaused = {},
         timelineItems = List(10) { "Item ${it + 1}" }

@@ -17,13 +17,14 @@
 package com.sgale.chart_common_ui.designsystem.timer
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement.Bottom
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -32,32 +33,16 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun TimeBar(
     modifier: Modifier,
-    color: Color,
-    timelineItems: List<String>
+    timePercentage: Float,
+    timelineItems: List<String>,
+    color: Color
 ) {
-    Box(
-        modifier = modifier.fillMaxHeight(),
-        contentAlignment = BottomCenter
+    Column(
+        modifier = modifier.fillMaxHeight().padding(end = 16.dp),
+        verticalArrangement = Bottom
     ) {
-        TimeLine(
-            color = color,
-            timelineItems = timelineItems
-        )
-    }
-}
+        TimerPositionItem(timePercentage, color)
 
-@Composable
-fun TimeLine(
-    color: Color,
-    timelineItems: List<String>
-) {
-    val arrowHeight = 10.dp
-    Column {
-        Box(
-            modifier = Modifier.fillMaxWidth().height(arrowHeight),
-        ){
-            drawTriangle(arrowHeight, color)
-        }
         Box(
             modifier = Modifier.fillMaxWidth().height(1.dp).background(color)
         )
@@ -77,8 +62,9 @@ fun PreviewTimeBar() {
     ) {
         TimeBar(
             modifier = Modifier.fillMaxWidth(),
+            timePercentage = 0.5f,
+            timelineItems = List(10) { "Item ${it + 1}" },
             color = TIME_BAR_COLOR,
-            timelineItems = List(10) { "Item ${it + 1}" }
         )
     }
 }

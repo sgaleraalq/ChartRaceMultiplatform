@@ -17,34 +17,55 @@
 package com.sgale.chart_common_ui.designsystem.timer
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun BoxScope.drawTriangle(
-    arrowHeight: Dp,
-    color: Color = Gray
+fun TimerPositionItem(
+    timePercentage: Float,
+    color: Color
 ) {
-    Canvas(
-        modifier = Modifier.fillMaxSize()
+    val arrowHeight = 10.dp
+    BoxWithConstraints(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(arrowHeight)
     ) {
-        val width = arrowHeight.toPx()
-        val height = arrowHeight.toPx()
+        val totalWidthPx = with(LocalDensity.current) { maxWidth.toPx() }
 
-        val path = Path().apply {
-            moveTo(width / 2f, height)
-            lineTo(0f, 0f)
-            lineTo(width, 0f)
-            close()
+        val arrowSizePx = with(LocalDensity.current) { arrowHeight.toPx() }
+        val xOffset = (totalWidthPx * timePercentage - arrowSizePx / 2).toInt()
+
+        Box(
+            modifier = Modifier
+                .offset { IntOffset(x = xOffset, y = 0) }
+                .size(arrowHeight)
+        ) {
+            Canvas(modifier = Modifier.fillMaxSize()) {
+                val width = size.width
+                val height = size.height
+
+                val path = Path().apply {
+                    moveTo(width / 2f, height)
+                    lineTo(0f, 0f)
+                    lineTo(width, 0f)
+                    close()
+                }
+
+                drawPath(path = path, color = color)
+            }
         }
-
-        drawPath(path = path, color = color)
     }
 }

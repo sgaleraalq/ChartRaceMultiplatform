@@ -40,14 +40,15 @@ class Timer(
 
     private var startTimeMillis: Long = 0L
     private var accumulatedTime: Long = 0L
+    private var elapsedTime:     Long = 0L
     private var job: Job? = null
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     /**
      * Composable state flow to hold the elapsed time in milliseconds.
      */
-    private val _elapsedTime = MutableStateFlow(0L)
-    val elapsedTime: StateFlow<Long> = _elapsedTime
+    private val _timePercentage = MutableStateFlow(0f)
+    var timePercentage: StateFlow<Float> = _timePercentage
     private val _isPlaying = MutableStateFlow(false)
     var isPlaying: StateFlow<Boolean> = _isPlaying
 
@@ -56,9 +57,13 @@ class Timer(
         if (job == null) {
             startTimeMillis = currentTimeMillis()
             job = coroutineScope.launch {
-                while (isActive) {
+                while (isActive && elapsedTime <= maxTime) {
                     delay(DELAY_TIME)
-                    _elapsedTime.value = accumulatedTime + (currentTimeMillis() - startTimeMillis)
+                    elapsedTime = accumulatedTime + (currentTimeMillis() - startTimeMillis)
+                    _timePercentage.value = (elapsedTime.toFloat() / maxTime.toFloat()).coerceIn(0f, 1f)
+                    if (elapsedTime > maxTime) {
+                        reset()
+                    }
                 }
             }
         }
@@ -70,13 +75,17 @@ class Timer(
         job = null
         val now = currentTimeMillis()
         accumulatedTime += now - startTimeMillis
-        _elapsedTime.value = accumulatedTime
+        elapsedTime = accumulatedTime
     }
 
-    fun stopTime() {
+    fun reset() {
         job?.cancel()
         job = null
-        _elapsedTime.value = 0L
+        elapsedTime = 0L
+        accumulatedTime = 0L
+        startTimeMillis = 0L
+        _timePercentage.value = 0f
+        _isPlaying.value = false
     }
 
     @OptIn(ExperimentalTime::class)
