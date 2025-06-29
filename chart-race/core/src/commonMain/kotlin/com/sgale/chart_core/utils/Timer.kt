@@ -78,7 +78,17 @@ class Timer(
         elapsedTime = accumulatedTime
     }
 
-    fun reset() {
+    fun onTimePositionChanged(position: Float) {
+        job?.cancel()
+        job = null
+        _isPlaying.value = false
+        elapsedTime = (maxTime * position).toLong()
+        accumulatedTime = elapsedTime
+        startTimeMillis = currentTimeMillis()
+        _timePercentage.value = position.coerceIn(0f, 1f)
+    }
+
+    private fun reset() {
         job?.cancel()
         job = null
         elapsedTime = 0L

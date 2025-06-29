@@ -17,6 +17,8 @@
 package com.sgale.chart_common_ui.designsystem.timer
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -35,6 +38,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun TimerPositionItem(
     timePercentage: Float,
+    onTimePositionChanged: (Float) -> Unit = {},
     color: Color
 ) {
     val arrowHeight = 10.dp
@@ -42,6 +46,15 @@ fun TimerPositionItem(
         modifier = Modifier
             .fillMaxWidth()
             .height(arrowHeight)
+            .pointerInput(Unit){
+                awaitPointerEventScope {
+                    while (true) {
+                        val down = awaitFirstDown()
+                        val percentage = (down.position.x / size.width).coerceIn(0f, 1f)
+                        onTimePositionChanged(percentage)
+                    }
+                }
+            }
     ) {
         val totalWidthPx = with(LocalDensity.current) { maxWidth.toPx() }
 

@@ -34,6 +34,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun TimeBar(
     modifier: Modifier,
     timePercentage: Float,
+    onTimePositionChanged: (Float) -> Unit,
     timelineItems: List<String>,
     color: Color
 ) {
@@ -41,7 +42,11 @@ fun TimeBar(
         modifier = modifier.fillMaxHeight().padding(end = 16.dp),
         verticalArrangement = Bottom
     ) {
-        TimerPositionItem(timePercentage, color)
+        TimerPositionItem(
+            timePercentage = timePercentage,
+            onTimePositionChanged = { onTimePositionChanged(it) },
+            color = color
+        )
 
         Box(
             modifier = Modifier.fillMaxWidth().height(1.dp).background(color)
@@ -64,6 +69,7 @@ fun PreviewTimeBar() {
             modifier = Modifier.fillMaxWidth(),
             timePercentage = 0.5f,
             timelineItems = List(10) { "Item ${it + 1}" },
+            onTimePositionChanged = {},
             color = TIME_BAR_COLOR,
         )
     }

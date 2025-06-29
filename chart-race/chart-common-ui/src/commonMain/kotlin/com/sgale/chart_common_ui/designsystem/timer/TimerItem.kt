@@ -40,6 +40,7 @@ fun TimerItem(
     timePercentage: Float,
     onTimeStarted: () -> Unit,
     onTimePaused: () -> Unit,
+    onTimePositionChanged: (Float) -> Unit,
     timelineItems: List<String>
 ) {
     Box(
@@ -58,6 +59,9 @@ fun TimerItem(
             TimeBar(
                 modifier = Modifier.weight(1f),
                 timePercentage = timePercentage,
+                onTimePositionChanged = {
+                    onTimePositionChanged(it)
+                },
                 timelineItems = timelineItems,
                 color = TIME_BAR_COLOR
             )
@@ -73,6 +77,7 @@ fun PreviewTimer() {
         timePercentage = 0.5f,
         onTimeStarted = {},
         onTimePaused = {},
+        onTimePositionChanged = {},
         timelineItems = List(10) { "Item ${it + 1}" }
     )
 }

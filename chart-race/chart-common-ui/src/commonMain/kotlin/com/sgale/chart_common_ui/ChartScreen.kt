@@ -65,6 +65,7 @@ fun ChartRace(
             timePercentage = timePercentage,
             onTimeStarted = { timer.startTime() },
             onTimePaused = { timer.pauseTime() },
+            onTimePositionChanged = { timer.onTimePositionChanged(it) },
             timelineItems = timelineItems,
         )
     }
