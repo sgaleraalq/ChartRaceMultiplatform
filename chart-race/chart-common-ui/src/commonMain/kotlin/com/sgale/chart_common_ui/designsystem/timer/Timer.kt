@@ -35,10 +35,11 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 val TIME_BAR_COLOR = Color(0xFFAAAAAA)
 
 @Composable
-fun Timer(
+fun TimerItem(
     isPlaying: Boolean,
     onTimeStarted: () -> Unit,
     onTimePaused: () -> Unit,
+    timelineItems: List<String>
 ) {
     Box(
         modifier = Modifier.fillMaxWidth().background(White).height(50.dp),
@@ -55,20 +56,20 @@ fun Timer(
             Spacer(Modifier.width(8.dp))
             TimeBar(
                 modifier = Modifier.weight(1f),
-                color = TIME_BAR_COLOR
+                color = TIME_BAR_COLOR,
+                timelineItems = timelineItems
             )
         }
     }
 }
 
-
-
 @Composable
 @Preview
 fun PreviewTimer() {
-    Timer(
+    TimerItem(
         isPlaying = false,
         onTimeStarted = {},
-        onTimePaused = {}
+        onTimePaused = {},
+        timelineItems = List(10) { "Item ${it + 1}" }
     )
 }

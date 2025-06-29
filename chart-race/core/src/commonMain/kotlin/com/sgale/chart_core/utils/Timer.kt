@@ -28,8 +28,16 @@ import kotlinx.coroutines.launch
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
-object Timer {
-    private const val DELAY_TIME: Long = 16L
+class Timer(
+    timelineItems: Int
+) {
+    companion object {
+        const val DELAY_TIME = 16L
+        const val TIMELINE_INTERVAL = 1000L
+    }
+
+    private val maxTime: Long = TIMELINE_INTERVAL * timelineItems
+
     private var startTimeMillis: Long = 0L
     private var accumulatedTime: Long = 0L
     private var job: Job? = null

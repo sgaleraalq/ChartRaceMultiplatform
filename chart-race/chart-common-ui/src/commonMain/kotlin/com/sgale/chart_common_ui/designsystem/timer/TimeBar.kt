@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,14 +32,16 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun TimeBar(
     modifier: Modifier,
-    color: Color
+    color: Color,
+    timelineItems: List<String>
 ) {
     Box(
         modifier = modifier.fillMaxHeight(),
         contentAlignment = BottomCenter
     ) {
         TimeLine(
-            color = color
+            color = color,
+            timelineItems = timelineItems
         )
     }
 }
@@ -48,16 +49,9 @@ fun TimeBar(
 @Composable
 fun TimeLine(
     color: Color,
-    valuesIndicator: List<String> = remember {
-        val listSize = (5..50).random()
-        val startYear = (1900..2020).random()
-        List(listSize) { index ->
-            (startYear + index).toString()
-        }
-    }
+    timelineItems: List<String>
 ) {
     val arrowHeight = 10.dp
-    println("valuesIndicator: $valuesIndicator")
     Column {
         Box(
             modifier = Modifier.fillMaxWidth().height(arrowHeight),
@@ -83,7 +77,8 @@ fun PreviewTimeBar() {
     ) {
         TimeBar(
             modifier = Modifier.fillMaxWidth(),
-            color = TIME_BAR_COLOR
+            color = TIME_BAR_COLOR,
+            timelineItems = List(10) { "Item ${it + 1}" }
         )
     }
 }

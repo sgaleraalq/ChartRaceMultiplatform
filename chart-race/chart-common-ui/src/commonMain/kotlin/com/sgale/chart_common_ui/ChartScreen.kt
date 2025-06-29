@@ -21,16 +21,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.White
 import com.sgale.chart_common_ui.barchart.BarChartRace
-import com.sgale.chart_common_ui.designsystem.timer.Timer
+import com.sgale.chart_common_ui.designsystem.timer.TimerItem
 import com.sgale.chart_common_ui.linechart.LineChartRace
 import com.sgale.chart_core.utils.DataType
-import com.sgale.chart_core.utils.Timer.elapsedTime
-import com.sgale.chart_core.utils.Timer.isPlaying
-import com.sgale.chart_core.utils.Timer.pauseTime
-import com.sgale.chart_core.utils.Timer.startTime
+import com.sgale.chart_core.utils.Timer
 
 @Composable
 fun ChartRace(
@@ -39,8 +37,18 @@ fun ChartRace(
     dataType: DataType = DataType.LONG,
     numberOfEntries: Int = 10
 ) {
-    val time by elapsedTime.collectAsState()
-    val isPlaying by isPlaying.collectAsState()
+    val timelineItems = remember {
+        val listSize = (5..50).random()
+        val startYear = (1900..2020).random()
+        List(listSize) { index ->
+            (startYear + index).toString()
+        }
+    }
+
+    val timer = remember { Timer(timelineItems.size) }
+
+    val time by timer.elapsedTime.collectAsState()
+    val isPlaying by timer.isPlaying.collectAsState()
 
     println(time)
 
@@ -51,10 +59,11 @@ fun ChartRace(
             ChartType.BAR_CHART -> BarChartRace(csvData, dataType, numberOfEntries)
             ChartType.LINE_CHART -> LineChartRace(csvData, dataType)
         }
-        Timer(
+        TimerItem(
             isPlaying = isPlaying,
-            onTimeStarted = { startTime() },
-            onTimePaused = { pauseTime() }
+            onTimeStarted = { timer.startTime() },
+            onTimePaused = { timer.pauseTime() },
+            timelineItems = timelineItems,
         )
     }
 }
