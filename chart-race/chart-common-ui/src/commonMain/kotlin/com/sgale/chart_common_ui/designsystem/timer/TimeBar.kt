@@ -16,6 +16,7 @@
 
 package com.sgale.chart_common_ui.designsystem.timer
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Bottom
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -48,7 +49,7 @@ fun TimeBar(
         )
         TimelineBar(color)
         TimelineItems(
-            modifier = Modifier.height(20.dp).fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             color = color,
             items = timelineItems
         )

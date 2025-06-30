@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -33,9 +34,14 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.TextMeasurer
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlin.math.max
 import kotlin.math.roundToInt
 
@@ -49,7 +55,6 @@ fun TimerPositionItem(
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxWidth()
-            .height(arrowHeight)
             .pointerInput(Unit) {
                 awaitPointerEventScope {
                     while (true) {
@@ -111,20 +116,34 @@ fun TimelineItems(
     items: List<String>
 ) {
     val positions = getTimelinePositions(items)
+    val textMeasurer = rememberTextMeasurer()
 
-    Canvas(modifier = modifier) {
+    val sampleTextLayout = textMeasurer.measure(
+        text = "Item",
+        style = TextStyle(fontSize = 10.sp)
+    )
+    val textHeight = with(LocalDensity.current) { sampleTextLayout.size.height.toDp() }
+    val totalHeight = BAR_LARGE_SIZE + textHeight + 4.dp
+
+    Canvas(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(totalHeight)
+    ) {
         val idealHighlightCount = (size.width / 80f).coerceAtLeast(2f)
 
         val intervalForHighlight = when {
             items.size <= 10 -> 1
-            items.size <= 25 -> 2
-            items.size <= 40 -> 3
-            items.size <= 50 -> 4
+            items.size <= 25 -> 3
+            items.size <= 40 -> 4
+            items.size <= 50 -> 5
             else -> max(1, items.size / idealHighlightCount.roundToInt())
         }
 
         positions.forEachIndexed { index, pos ->
             val isHighlighted = index % intervalForHighlight == 0
+            val label = items.getOrNull(index) ?: ""
+
             drawTimeline(
                 color = color,
                 position = pos,
@@ -133,6 +152,8 @@ fun TimelineItems(
                 } else {
                     BAR_SMALL_SIZE
                 },
+                textMeasurer = textMeasurer,
+                label = label,
                 showText = isHighlighted
             )
         }
@@ -143,30 +164,37 @@ fun DrawScope.drawTimeline(
     color: Color,
     position: Float,
     timelineHeight: Dp,
+    textMeasurer: TextMeasurer,
+    label: String = "",
     showText: Boolean = false
 ) {
     val x = size.width * position
-    val y = size.height / 2
+    val barHeight = timelineHeight.toPx()
 
     drawLine(
         color = color,
         start = Offset(x, 0f),
-        end = Offset(x, timelineHeight.toPx()),
+        end = Offset(x, barHeight),
         strokeWidth = 1.dp.toPx()
     )
 
-//        if (showText) {
-//            drawContext.canvas.nativeCanvas.apply {
-//                drawText(
-//                    "Item ${position * 100}",
-//                    x,
-//                    y - timelineHeight.toPx() - 5,
-//                    Paint().apply {
-//                        color = Blue
-//                    }
-//                )
-//            }
-//        }
+    if (showText) {
+        val textLayout = textMeasurer.measure(
+            text = label,
+            style = TextStyle(
+                color = color,
+                fontSize = 10.sp
+            )
+        )
+
+        drawText(
+            textLayoutResult = textLayout,
+            topLeft = Offset(
+                x - textLayout.size.width / 2f,
+                barHeight + 1.dp.toPx()
+            )
+        )
+    }
 }
 
 private fun getTimelinePositions(items: List<String>): List<Float> =
