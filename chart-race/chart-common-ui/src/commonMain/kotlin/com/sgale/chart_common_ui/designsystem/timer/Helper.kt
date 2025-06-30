@@ -36,6 +36,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import kotlin.math.max
+import kotlin.math.roundToInt
 
 @Composable
 fun TimerPositionItem(
@@ -99,29 +101,46 @@ fun TimelineBar(color: Color) {
     }
 }
 
-val BAR_SMALL_SIZE = 5.dp
+val BAR_SMALL_SIZE = 3.5.dp
 val BAR_LARGE_SIZE = 10.dp
 
 @Composable
 fun TimelineItems(
     modifier: Modifier = Modifier,
+    color: Color,
     items: List<String>
 ) {
     val positions = getTimelinePositions(items)
-    val highlightedItems = listOf(0.5f, 0.65f)
 
     Canvas(modifier = modifier) {
-        positions.forEach {
-            if (it == 0.5f) {
-                drawTimeline(it, BAR_LARGE_SIZE, true)
-            } else {
-                drawTimeline(it, BAR_SMALL_SIZE)
-            }
+        val idealHighlightCount = (size.width / 80f).coerceAtLeast(2f)
+
+        val intervalForHighlight = when {
+            items.size <= 10 -> 1
+            items.size <= 25 -> 2
+            items.size <= 40 -> 3
+            items.size <= 50 -> 4
+            else -> max(1, items.size / idealHighlightCount.roundToInt())
+        }
+
+        positions.forEachIndexed { index, pos ->
+            val isHighlighted = index % intervalForHighlight == 0
+            drawTimeline(
+                color = color,
+                position = pos,
+                timelineHeight = if (isHighlighted) {
+                    BAR_LARGE_SIZE
+                } else {
+                    BAR_SMALL_SIZE
+                },
+                showText = isHighlighted
+            )
         }
     }
 }
 
 fun DrawScope.drawTimeline(
+    color: Color,
     position: Float,
     timelineHeight: Dp,
     showText: Boolean = false
@@ -130,7 +149,7 @@ fun DrawScope.drawTimeline(
     val y = size.height / 2
 
     drawLine(
-        color = Color.Gray,
+        color = color,
         start = Offset(x, 0f),
         end = Offset(x, timelineHeight.toPx()),
         strokeWidth = 1.dp.toPx()

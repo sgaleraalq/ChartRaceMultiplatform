@@ -49,7 +49,8 @@ fun TimeBar(
         TimelineBar(color)
         TimelineItems(
             modifier = Modifier.height(20.dp).fillMaxWidth(),
-            items = timelineItems,
+            color = color,
+            items = timelineItems
         )
     }
 }

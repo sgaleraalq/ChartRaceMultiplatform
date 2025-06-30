@@ -38,7 +38,7 @@ fun ChartRace(
     numberOfEntries: Int = 10
 ) {
     val timelineItems = remember {
-        val listSize = (5..10).random()
+        val listSize = (5..50).random()
         val startYear = (1900..2020).random()
         List(listSize) { index ->
             (startYear + index).toString()
