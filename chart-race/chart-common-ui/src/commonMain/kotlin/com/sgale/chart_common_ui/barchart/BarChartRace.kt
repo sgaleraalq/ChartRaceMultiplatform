@@ -16,14 +16,20 @@
 
 package com.sgale.chart_common_ui.barchart
 
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.graphics.Color.Companion.Gray
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import com.sgale.chart_common_ui.designsystem.background.drawBackgroundInterval
 import com.sgale.chart_core.barchart.BarChart
 import com.sgale.chart_core.utils.DataType
 
@@ -33,10 +39,29 @@ fun BarChartRace(
     dataType: DataType,
     numberOfEntries: Int
 ) {
+    val density = LocalDensity.current
     val barChart = BarChart(csvData, dataType)
+    var chartHeight by remember { mutableStateOf(0.dp) }
 
-    Column {
-        BarChartRow(barChart, numberOfEntries)
+    Box(
+        modifier = Modifier.fillMaxWidth().onGloballyPositioned { layoutCoordinates ->
+            chartHeight = with(density) {
+                layoutCoordinates.size.height.toDp()
+            }
+        }
+    ) {
+        Canvas(
+            modifier = Modifier
+        ){
+            drawBackgroundInterval(
+                color = Gray,
+                xPosition = 0.5f,
+                height = chartHeight
+            )
+        }
+        Column {
+            BarChartRow(barChart, numberOfEntries)
+        }
     }
 }
 
@@ -47,7 +72,6 @@ fun BarChartRow(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxWidth()
             .padding(24.dp)
     ) {
         barChart.chartData.entries
