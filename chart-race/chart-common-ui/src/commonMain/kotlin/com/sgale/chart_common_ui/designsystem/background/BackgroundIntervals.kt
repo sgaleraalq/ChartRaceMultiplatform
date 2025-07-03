@@ -27,10 +27,11 @@ fun DrawScope.drawBackgroundInterval(
     xPosition: Float,
     height: Dp
 ) {
+    val x = size.width * xPosition
     drawLine(
         color = color,
-        start = Offset(x = xPosition, y = 0f),
-        end = Offset(x = xPosition, y = height.toPx()),
+        start = Offset(x = x, y = 0f),
+        end = Offset(x = x, y = height.toPx()),
         strokeWidth = 1.dp.toPx()
     )
 }

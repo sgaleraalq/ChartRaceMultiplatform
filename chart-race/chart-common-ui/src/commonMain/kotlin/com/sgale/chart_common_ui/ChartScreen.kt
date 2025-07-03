@@ -24,6 +24,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.White
+import com.sgale.chart_common_ui.ChartType.BAR_CHART
+import com.sgale.chart_common_ui.ChartType.LINE_CHART
 import com.sgale.chart_common_ui.barchart.BarChartRace
 import com.sgale.chart_common_ui.designsystem.timer.TimerItem
 import com.sgale.chart_common_ui.linechart.LineChartRace
@@ -33,7 +35,7 @@ import com.sgale.chart_core.utils.Timer
 @Composable
 fun ChartRace(
     csvData: String,
-    chartType: ChartType = ChartType.BAR_CHART,
+    chartType: ChartType = BAR_CHART,
     dataType: DataType = DataType.LONG,
     numberOfEntries: Int = 10
 ) {
@@ -54,8 +56,8 @@ fun ChartRace(
         modifier = Modifier.background(White)
     ) {
         when (chartType) {
-            ChartType.BAR_CHART -> BarChartRace(csvData, dataType, numberOfEntries, timer)
-            ChartType.LINE_CHART -> LineChartRace(csvData, dataType)
+            BAR_CHART -> BarChartRace(csvData, dataType, numberOfEntries, timer)
+            LINE_CHART -> LineChartRace(csvData, dataType)
         }
         TimerItem(
             isPlaying = isPlaying,
