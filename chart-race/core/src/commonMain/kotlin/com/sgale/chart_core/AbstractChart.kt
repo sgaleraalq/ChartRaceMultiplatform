@@ -22,13 +22,29 @@ import com.sgale.chart_core.utils.DataType
 import com.sgale.chart_core.utils.DataType.DOUBLE
 import com.sgale.chart_core.utils.DataType.INT
 import com.sgale.chart_core.utils.DataType.LONG
+import com.sgale.chart_core.utils.Timer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 abstract class AbstractChart(
     data: String,
-    dataType: DataType
+    dataType: DataType,
+    timer: Timer
 ) : ChartEntry {
 
     private val csvParser = CsvParser()
+
+    private val coroutineScope = CoroutineScope(Dispatchers.Default)
+
+    init {
+        coroutineScope.launch {
+            timer.timePercentage.collect { progress ->
+                println("Timer progress: $progress")
+            }
+        }
+    }
+
 
     val chartData: ChartData = when (dataType) {
         INT -> {
@@ -47,4 +63,6 @@ abstract class AbstractChart(
             ChartData.LongData(parsed)
         }
     }
+
+
 }

@@ -18,11 +18,13 @@ package com.sgale.chart_core.barchart
 
 import com.sgale.chart_core.AbstractChart
 import com.sgale.chart_core.utils.DataType
+import com.sgale.chart_core.utils.Timer
 
 class BarChart (
     csvData: String,
-    dataType: DataType
-) : AbstractChart(csvData, dataType) {
+    dataType: DataType,
+    timer: Timer
+) : AbstractChart(csvData, dataType, timer) {
 
     override fun onNewPosition() {
 

@@ -32,15 +32,17 @@ import androidx.compose.ui.unit.dp
 import com.sgale.chart_common_ui.designsystem.background.drawBackgroundInterval
 import com.sgale.chart_core.barchart.BarChart
 import com.sgale.chart_core.utils.DataType
+import com.sgale.chart_core.utils.Timer
 
 @Composable
 fun BarChartRace(
     csvData: String,
     dataType: DataType,
-    numberOfEntries: Int
+    numberOfEntries: Int,
+    timer: Timer
 ) {
     val density = LocalDensity.current
-    val barChart = BarChart(csvData, dataType)
+    val barChart = BarChart(csvData, dataType, timer)
     var chartHeight by remember { mutableStateOf(0.dp) }
 
     Box(

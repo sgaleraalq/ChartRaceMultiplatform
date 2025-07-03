@@ -50,14 +50,11 @@ fun ChartRace(
     val timePercentage by timer.timePercentage.collectAsState()
     val isPlaying by timer.isPlaying.collectAsState()
 
-    println("timelineItems = $timelineItems")
-    println("Timer: timePercentage = $timePercentage")
-
     Column(
         modifier = Modifier.background(White)
     ) {
         when (chartType) {
-            ChartType.BAR_CHART -> BarChartRace(csvData, dataType, numberOfEntries)
+            ChartType.BAR_CHART -> BarChartRace(csvData, dataType, numberOfEntries, timer)
             ChartType.LINE_CHART -> LineChartRace(csvData, dataType)
         }
         TimerItem(
