@@ -45,7 +45,7 @@ fun BarChartRace(
     timer: Timer
 ) {
     val density = LocalDensity.current
-    val barChart = BarChart(csvData, dataType, timer)
+    val barChart = BarChart(timer, csvData, dataType)
     var chartHeight by remember { mutableStateOf(0.dp) }
 
     Box(
