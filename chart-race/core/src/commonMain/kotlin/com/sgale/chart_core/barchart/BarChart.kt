@@ -21,12 +21,12 @@ import com.sgale.chart_core.utils.DataType
 import com.sgale.chart_core.utils.Timer
 
 class BarChart (
+    timer: Timer,
     csvData: String,
     dataType: DataType,
-    timer: Timer
-) : AbstractChart(csvData, dataType, timer) {
+) : AbstractChart(timer, csvData, dataType) {
 
-    override fun onNewPosition() {
+    override fun onTimeChanged() {
 
     }
 }

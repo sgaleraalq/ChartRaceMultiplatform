@@ -28,9 +28,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 abstract class AbstractChart(
+    private val timer: Timer,
     data: String,
     dataType: DataType,
-    timer: Timer
 ) : ChartEntry {
 
     private val csvParser = CsvParser()
@@ -38,11 +38,7 @@ abstract class AbstractChart(
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
     init {
-        coroutineScope.launch {
-            timer.timePercentage.collect { progress ->
-                println("Timer progress: $progress")
-            }
-        }
+        initTimerListener()
     }
 
     val chartData: ChartData = when (dataType) {
@@ -63,5 +59,11 @@ abstract class AbstractChart(
         }
     }
 
-
+    private fun initTimerListener() {
+        coroutineScope.launch {
+            timer.timePercentage.collect { progress ->
+                println("Timer progress: $progress")
+            }
+        }
+    }
 }

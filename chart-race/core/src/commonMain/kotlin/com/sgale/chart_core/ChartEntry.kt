@@ -17,5 +17,5 @@
 package com.sgale.chart_core
 
 interface ChartEntry {
-    fun onNewPosition()
+    fun onTimeChanged()
 }
