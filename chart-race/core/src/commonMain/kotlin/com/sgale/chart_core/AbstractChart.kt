@@ -45,7 +45,6 @@ abstract class AbstractChart(
         }
     }
 
-
     val chartData: ChartData = when (dataType) {
         INT -> {
             val parsed = csvParser.parseCsvAsInt(data).values.sortedByDescending { it.currentValue }
