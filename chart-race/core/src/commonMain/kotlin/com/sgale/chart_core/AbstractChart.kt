@@ -33,36 +33,27 @@ abstract class AbstractChart(
     dataType: DataType,
 ) : ChartEntry {
 
-    private val csvParser = CsvParser()
-
+    val chartData: ChartData
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
     init {
-        initTimerListener()
+        chartData = parseChartData(data, dataType)
+        observeTimer()
     }
 
-    val chartData: ChartData = when (dataType) {
-        INT -> {
-            val parsed = csvParser.parseCsvAsInt(data).values.sortedByDescending { it.currentValue }
-            println("This is my chartData: $parsed")
-            ChartData.IntData(parsed)
-        }
-        DOUBLE -> {
-            val parsed = csvParser.parseCsvAsDouble(data).values.sortedByDescending { it.currentValue }
-            println("This is my chartData: $parsed")
-            ChartData.DoubleData(parsed)
-        }
-        LONG -> {
-            val parsed = csvParser.parseCsvAsLong(data).values.sortedByDescending { it.currentValue }
-            println("This is my chartData: $parsed")
-            ChartData.LongData(parsed)
+    private fun parseChartData(data: String, dataType: DataType): ChartData {
+        val parser = CsvParser()
+        return when (dataType) {
+            INT -> ChartData.IntData(parser.parseCsvAsInt(data).values.sortedByDescending { it.currentValue })
+            DOUBLE -> ChartData.DoubleData(parser.parseCsvAsDouble(data).values.sortedByDescending { it.currentValue })
+            LONG -> ChartData.LongData(parser.parseCsvAsLong(data).values.sortedByDescending { it.currentValue })
         }
     }
 
-    private fun initTimerListener() {
+    private fun observeTimer() {
         coroutineScope.launch {
             timer.timePercentage.collect { progress ->
-                println("Timer progress: $progress")
+                onNewPosition(progress)
             }
         }
     }
