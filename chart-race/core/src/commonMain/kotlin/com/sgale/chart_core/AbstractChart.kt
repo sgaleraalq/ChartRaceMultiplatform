@@ -17,7 +17,7 @@
 package com.sgale.chart_core
 
 import com.sgale.chart_core.csv.CsvParser
-import com.sgale.chart_core.model.ChartData
+import com.sgale.chart_core.model.ChartDataModel
 import com.sgale.chart_core.utils.DataType
 import com.sgale.chart_core.utils.DataType.DOUBLE
 import com.sgale.chart_core.utils.DataType.INT
@@ -33,20 +33,32 @@ abstract class AbstractChart(
     dataType: DataType,
 ) : ChartEntry {
 
-    val chartData: ChartData
+    private val parser = CsvParser()
+
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
     init {
-        chartData = parseChartData(data, dataType)
+        parseChartData(data, dataType)
         observeTimer()
     }
 
-    private fun parseChartData(data: String, dataType: DataType): ChartData {
-        val parser = CsvParser()
-        return when (dataType) {
-            INT -> ChartData.IntData(parser.parseCsvAsInt(data).values.sortedByDescending { it.currentValue })
-            DOUBLE -> ChartData.DoubleData(parser.parseCsvAsDouble(data).values.sortedByDescending { it.currentValue })
-            LONG -> ChartData.LongData(parser.parseCsvAsLong(data).values.sortedByDescending { it.currentValue })
+    private fun parseChartData(data: String, dataType: DataType) {
+        when (dataType) {
+            INT -> {
+                val parsed = parser.parseCsvAsInt(data).values
+                    .sortedByDescending { it.currentValue }
+                initChartData(parsed)
+            }
+            DOUBLE -> {
+                val parsed = parser.parseCsvAsDouble(data).values
+                    .sortedByDescending { it.currentValue }
+                initChartData(parsed)
+            }
+            LONG -> {
+                val parsed = parser.parseCsvAsLong(data).values
+                    .sortedByDescending { it.currentValue }
+                initChartData(parsed)
+            }
         }
     }
 
