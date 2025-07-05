@@ -17,6 +17,7 @@
 package com.sgale.chart_core.barchart
 
 import com.sgale.chart_core.AbstractChart
+import com.sgale.chart_core.model.ChartDataModel
 import com.sgale.chart_core.model.ChartEntryModel
 import com.sgale.chart_core.utils.DataType
 import com.sgale.chart_core.utils.Timer
@@ -27,14 +28,21 @@ class BarChart (
     dataType: DataType,
 ) : AbstractChart(timer, csvData, dataType) {
 
-    lateinit var barChartData: List<ChartEntryModel<out Number>>
+    lateinit var barChartData: List<BarChartEntry<out Number>>
 
     override fun <T : Number> initChartData(data: List<ChartEntryModel<T>>) {
-        barChartData = data
-        println("The data is: $barChartData")
+        barChartData = data.map { entryModel ->
+            BarChartEntry(entryModel)
+        }
     }
 
     override fun onNewPosition(time: Float) {
-        println("New position at time: $time")
+        updateAllCurrentValues(time)
+    }
+
+    private fun updateAllCurrentValues(time: Float) {
+        barChartData.forEach {
+            it.updateCurrentValue(time)
+        }
     }
 }

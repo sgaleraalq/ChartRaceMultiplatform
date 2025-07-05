@@ -17,7 +17,6 @@
 package com.sgale.chart_core
 
 import com.sgale.chart_core.csv.CsvParser
-import com.sgale.chart_core.model.ChartDataModel
 import com.sgale.chart_core.utils.DataType
 import com.sgale.chart_core.utils.DataType.DOUBLE
 import com.sgale.chart_core.utils.DataType.INT
@@ -27,14 +26,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-abstract class AbstractChart(
+abstract class AbstractChart (
     private val timer: Timer,
     data: String,
     dataType: DataType,
-) : ChartEntry {
+) : IChart {
 
     private val parser = CsvParser()
-
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
     init {
@@ -45,19 +43,19 @@ abstract class AbstractChart(
     private fun parseChartData(data: String, dataType: DataType) {
         when (dataType) {
             INT -> {
-                val parsed = parser.parseCsvAsInt(data).values
+                val parsedData = parser.parseCsvAsInt(data).values
                     .sortedByDescending { it.currentValue }
-                initChartData(parsed)
+                initChartData(parsedData)
             }
             DOUBLE -> {
-                val parsed = parser.parseCsvAsDouble(data).values
+                val parsedData = parser.parseCsvAsDouble(data).values
                     .sortedByDescending { it.currentValue }
-                initChartData(parsed)
+                initChartData(parsedData)
             }
             LONG -> {
-                val parsed = parser.parseCsvAsLong(data).values
+                val parsedData = parser.parseCsvAsLong(data).values
                     .sortedByDescending { it.currentValue }
-                initChartData(parsed)
+                initChartData(parsedData)
             }
         }
     }

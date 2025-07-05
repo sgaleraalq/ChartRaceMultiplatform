@@ -18,7 +18,7 @@ package com.sgale.chart_core
 
 import com.sgale.chart_core.model.ChartEntryModel
 
-interface ChartEntry {
+interface IChart {
     fun <T: Number> initChartData(data: List<ChartEntryModel<T>>)
     fun onNewPosition(time:Float)
 }

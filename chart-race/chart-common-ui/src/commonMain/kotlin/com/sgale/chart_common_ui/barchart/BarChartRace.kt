@@ -19,6 +19,8 @@ package com.sgale.chart_common_ui.barchart
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -36,6 +38,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.sgale.chart_common_ui.designsystem.background.drawBackgroundInterval
 import com.sgale.chart_core.barchart.BarChart
+import com.sgale.chart_core.barchart.BarChartEntry
 import com.sgale.chart_core.utils.DataType
 import com.sgale.chart_core.utils.Timer
 
@@ -50,6 +53,8 @@ fun BarChartRace(
     val barChart = BarChart(timer, csvData, dataType)
     var chartHeight by remember { mutableStateOf(0.dp) }
 
+    val chartEntries = remember { mutableStateOf(barChart.barChartData) }
+
     Box(
         modifier = Modifier.fillMaxWidth().onGloballyPositioned { layoutCoordinates ->
             chartHeight = with(density) {
@@ -59,7 +64,7 @@ fun BarChartRace(
     ) {
         Canvas(
             modifier = Modifier.fillMaxWidth().height(chartHeight)
-        ){
+        ) {
             drawBackgroundInterval(
                 color = Gray,
                 xPosition = 0.5f,
@@ -67,27 +72,36 @@ fun BarChartRace(
             )
         }
         Column {
-            BarChartRow(barChart, numberOfEntries)
+            BarChartRow(chartEntries.value, numberOfEntries)
         }
     }
 }
 
 @Composable
 fun BarChartRow(
-    barChart: BarChart,
+    chartData: List<BarChartEntry<out Number>>,
     entries: Int
 ) {
     Column(
         modifier = Modifier
             .padding(24.dp)
     ) {
-        barChart.barChartData
+        chartData
             .take(entries)
             .forEach { entry ->
-                Text(
-                    text = entry.label,
-                    color = Black
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = entry.entryModel.label,
+                        color = Black
+                    )
+                    Spacer(Modifier.weight(1f))
+                    Text(
+                        text = entry.entryModel.currentValue.toString(),
+                        color = Black
+                    )
+                }
             }
     }
 }

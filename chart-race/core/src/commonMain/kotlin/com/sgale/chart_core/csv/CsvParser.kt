@@ -48,13 +48,10 @@ class CsvParser(
             if (valuesMap.isEmpty()) return@mapNotNull null
 
             val label = values.getOrNull(0)?.trim() ?: return@mapNotNull null
-            val defaultKey = headerMap[1] ?: return@mapNotNull null
-            val currentValue = valuesMap[defaultKey] ?: defaultValueForType<T>()
 
             ChartEntryModel(
                 id = label, // todo
                 label = label,
-                currentValue = currentValue,
                 currentPercentage = 1f,
                 values = valuesMap
             )
@@ -69,14 +66,6 @@ class CsvParser(
             Long::class -> raw.toLongOrNull() as? T
             Double::class -> raw.toDoubleOrNull() as? T
             else -> null
-        }
-
-    private inline fun <reified T : Number> defaultValueForType(): T =
-        when (T::class) {
-            Int::class -> 0 as T
-            Long::class -> 0L as T
-            Double::class -> 0.0 as T
-            else -> throw IllegalArgumentException("Unsupported type: ${T::class}")
         }
 
     override fun parseCsvAsInt(csvData: String): ChartDataModel<Int> = parseCsv(csvData)
