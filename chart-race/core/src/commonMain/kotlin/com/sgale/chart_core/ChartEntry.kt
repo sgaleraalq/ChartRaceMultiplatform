@@ -18,4 +18,5 @@ package com.sgale.chart_core
 
 interface ChartEntry {
     fun onTimeChanged()
+    fun updateAllChartEntries()
 }
