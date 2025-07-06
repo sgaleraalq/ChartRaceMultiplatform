@@ -17,28 +17,16 @@
 package com.sgale.chart_common_ui.barchart
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color.Companion.Black
-import androidx.compose.ui.graphics.Color.Companion.Gray
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
-import com.sgale.chart_common_ui.designsystem.background.drawBackgroundInterval
 import com.sgale.chart_core.barchart.BarChart
-import com.sgale.chart_core.barchart.BarChartEntry
+import com.sgale.chart_core.utils.Configuration.BAR_HEIGHT
 import com.sgale.chart_core.utils.DataType
 import com.sgale.chart_core.utils.Timer
 
@@ -49,59 +37,32 @@ fun BarChartRace(
     numberOfEntries: Int,
     timer: Timer
 ) {
-    val density = LocalDensity.current
-    val barChart = BarChart(timer, csvData, dataType)
-    var chartHeight by remember { mutableStateOf(0.dp) }
+    val barChart = remember { BarChart(timer, csvData, dataType) }
+    val entries = barChart.barChartData.take(numberOfEntries)
 
-    val chartEntries = remember { mutableStateOf(barChart.barChartData) }
+    val currentValues = entries.map { it.currentValue.collectAsState() }
+    val chartHeight = (numberOfEntries * BAR_HEIGHT).dp
+    val textMeasurer = rememberTextMeasurer()
 
-    Box(
-        modifier = Modifier.fillMaxWidth().onGloballyPositioned { layoutCoordinates ->
-            chartHeight = with(density) {
-                layoutCoordinates.size.height.toDp()
-            }
-        }
+    Canvas(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(chartHeight)
     ) {
-        Canvas(
-            modifier = Modifier.fillMaxWidth().height(chartHeight)
-        ) {
-            drawBackgroundInterval(
-                color = Gray,
-                xPosition = 0.5f,
-                height = chartHeight
+        val barSpacing = BAR_HEIGHT.dp.toPx()
+
+        entries.forEachIndexed { index, entry ->
+            val value = currentValues[index].value
+            val barTop = index * barSpacing
+            val barHeight = barSpacing * 0.8f
+
+            println("Value: ${entry.entryModel.label}: $value")
+            // Barra
+            drawBar(
+                x = value,
+                y = barTop,
+                height = barHeight
             )
         }
-        Column {
-            BarChartRow(chartEntries.value, numberOfEntries)
-        }
-    }
-}
-
-@Composable
-fun BarChartRow(
-    chartData: List<BarChartEntry<out Number>>,
-    entries: Int
-) {
-    Column(
-        modifier = Modifier
-            .padding(24.dp)
-    ) {
-        chartData
-            .take(entries)
-            .forEach { entry ->
-                Row(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(
-                        text = entry.entryModel.label,
-                        color = Black
-                    )
-                    Spacer(Modifier.weight(1f))
-                    Text(
-                        text = entry.entryModel.currentValue.toString(),
-                        color = Black
-                    )
-                }
-            }
     }
 }
