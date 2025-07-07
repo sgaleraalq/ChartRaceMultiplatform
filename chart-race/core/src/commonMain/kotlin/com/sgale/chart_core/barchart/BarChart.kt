@@ -17,7 +17,6 @@
 package com.sgale.chart_core.barchart
 
 import com.sgale.chart_core.AbstractChart
-import com.sgale.chart_core.model.ChartDataModel
 import com.sgale.chart_core.model.ChartEntryModel
 import com.sgale.chart_core.utils.DataType
 import com.sgale.chart_core.utils.Timer
@@ -26,6 +25,7 @@ class BarChart (
     timer: Timer,
     csvData: String,
     dataType: DataType,
+    showEntries: Int
 ) : AbstractChart(timer, csvData, dataType) {
 
     lateinit var barChartData: List<BarChartEntry<out Number>>

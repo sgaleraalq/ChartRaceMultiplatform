@@ -21,12 +21,16 @@ import com.sgale.chart_core.model.ChartEntryModel
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class BarChartEntry <T: Number> (
-    val entryModel: ChartEntryModel<T>
+    entryModel: ChartEntryModel<T>
 ) : AbstractChartEntry() {
 
-    var currentValue = MutableStateFlow(0f)
+    override val id = entryModel.id
+    override val label = entryModel.label
+
+    private val _currentValue = MutableStateFlow(entryModel.currentValue)
+    val currentValue = _currentValue
 
     override fun updateCurrentValue(time: Float) {
-        currentValue.value = time
+        _currentValue.value = time
     }
 }

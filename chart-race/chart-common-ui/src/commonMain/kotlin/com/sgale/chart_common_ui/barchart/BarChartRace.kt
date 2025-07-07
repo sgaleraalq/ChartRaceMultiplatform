@@ -17,8 +17,12 @@
 package com.sgale.chart_common_ui.barchart
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
@@ -26,6 +30,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import com.sgale.chart_core.barchart.BarChart
+import com.sgale.chart_core.barchart.BarChartEntry
+import com.sgale.chart_core.model.ChartEntryModel
 import com.sgale.chart_core.utils.Configuration.BAR_HEIGHT
 import com.sgale.chart_core.utils.DataType
 import com.sgale.chart_core.utils.Timer
@@ -37,32 +43,55 @@ fun BarChartRace(
     numberOfEntries: Int,
     timer: Timer
 ) {
-    val barChart = remember { BarChart(timer, csvData, dataType) }
+    val barChart = remember { BarChart(timer, csvData, dataType, numberOfEntries) }
     val entries = barChart.barChartData.take(numberOfEntries)
 
-    val currentValues = entries.map { it.currentValue.collectAsState() }
+
     val chartHeight = (numberOfEntries * BAR_HEIGHT).dp
-    val textMeasurer = rememberTextMeasurer()
 
-    Canvas(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(chartHeight)
-    ) {
-        val barSpacing = BAR_HEIGHT.dp.toPx()
-
-        entries.forEachIndexed { index, entry ->
-            val value = currentValues[index].value
-            val barTop = index * barSpacing
-            val barHeight = barSpacing * 0.8f
-
-            println("Value: ${entry.entryModel.label}: $value")
-            // Barra
-            drawBar(
-                x = value,
-                y = barTop,
-                height = barHeight
+    Column {
+        entries.forEach {
+            MyText(
+                it
             )
         }
+    }
+
+//    Canvas(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .height(chartHeight)
+//    ) {
+//        val barSpacing = BAR_HEIGHT.dp.toPx()
+//
+//        entries.forEachIndexed { index, entry ->
+//            val value = currentValues[index]
+//            val barTop = index * barSpacing
+//            val barHeight = barSpacing * 0.8f
+//
+//            println("Value: ${entry.entryModel.label}: $value")
+//            drawBar(
+//                x = value,
+//                y = barTop,
+//                height = barHeight
+//            )
+//        }
+//    }
+}
+
+@Composable
+fun MyText(
+    data: BarChartEntry<out Number>
+) {
+    val label = data.label
+    val currentValue = data.currentValue.collectAsState().value
+    Row {
+        Text(
+            text = label
+        )
+        Spacer(Modifier.weight(1f))
+        Text(
+            text = currentValue.toString()
+        )
     }
 }
